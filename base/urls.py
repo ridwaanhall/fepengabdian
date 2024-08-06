@@ -2,7 +2,12 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    path('', views.index, name='index'),
+    # dashboard
+    path('', views.dashboard, name='dashboard'),
+    
+    # auth
+    path('login/', views.login, name='admin-login'),
+    path('forgot-password/', views.forgot_password, name='forgot-password'),
     
     # pamong
     path('list-pamong/', views.list_pamong, name='list-pamong'),

@@ -2,8 +2,23 @@ from django.shortcuts import render
 from django.http import HttpResponse
 
 
-def index(request):
-    return HttpResponse("About page")
+# check
+# def index(request):
+#     return HttpResponse("About page")
+
+
+# auth
+def login(request):
+    return render(request, 'login.html')
+
+def forgot_password(request):
+    return render(request, 'forgot-password.html')
+
+
+# dashboard
+def dashboard(request):
+    return render(request, 'dashboard.html')
+
 
 # pamong
 def list_pamong(request):
