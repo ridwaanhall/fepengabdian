@@ -33,27 +33,20 @@
     {% endfor %}
     {% endif %}
 
-    <form id="tambahPamongForm" method="post" enctype="multipart/form-data">
+    <form id="tambahPamongForm">
+        {% csrf_token %}
         <div class="row">
-
-            {% csrf_token %}
             <div class="col-xl-4">
-                <!-- Profile picture card -->
                 <div class="card mb-4 mb-xl-0">
                     <div class="card-header">Foto Profile</div>
                     <div class="card-body text-center">
-                        <!-- Profile picture image-->
                         <img id="profilePicture" class="img-account-profile rounded-circle mb-2" src="{% static 'img/undraw_profile.svg' %}" alt="Profile Picture" />
-                        <!-- Profile picture help block-->
                         <div class="small font-italic text-muted mb-4">JPG atau PNG max. 5 MB</div>
-                        <!-- Profile picture upload button-->
-                        <input type="file" id="foto" name="foto" class="form-control-file" onchange="loadFile(event)" />
+                        <input type="file" id="foto" name="foto" class="form-control-file" />
                     </div>
                 </div>
             </div>
-
             <div class="col-xl-8">
-                <!-- Account details card-->
                 <div class="card mb-4">
                     <div class="card-header">Pamong Detail</div>
                     <div class="card-body">
@@ -88,9 +81,9 @@
                             <div class="col-md-6">
                                 <label class="small mb-1" for="inputStatusKawin">Status Kawin</label>
                                 <select class="form-select" id="inputStatusKawin" name="status_kawin" required>
-                                    <option value="Kawin">Kawin</option>
                                     <option value="Belum Kawin">Belum Kawin</option>
-                                    <option value="Cerai">Cerai</option>
+                                    <option value="Kawin">Kawin</option>
+                                    <option value="Cerai Hidup">Cerai Hidup</option>
                                     <option value="Cerai Mati">Cerai Mati</option>
                                 </select>
                             </div>
@@ -118,7 +111,7 @@
                             </div>
                             <div class="col-md-6">
                                 <label class="small mb-1" for="inputAgama">Agama</label>
-                                <select class="form-select" id="inputAgama" type="text" name="agama" required>
+                                <select class="form-select" id="inputAgama" name="agama" required>
                                     <option value="Islam">Islam</option>
                                     <option value="Kristen">Kristen</option>
                                     <option value="Katolik">Katolik</option>
@@ -155,7 +148,7 @@
                             <label class="small mb-1" for="inputPendidikanTerakhir">Pendidikan Terakhir</label>
                             <input class="form-control" id="inputPendidikanTerakhir" type="text" name="pendidikan_terakhir" required />
                         </div>
-                        <button class="btn btn-primary" type="submit" id="submitPamong">Tambah Pamong</button>
+                        <button class="btn btn-primary" type="button" id="submitPamong">Tambah Pamong</button>
                     </div>
                 </div>
             </div>
@@ -175,5 +168,37 @@
             URL.revokeObjectURL(image.src) // Free memory
         }
     }
+</script>
+<script>
+    document.getElementById('submitPamong').addEventListener('click', async () => {
+        const form = document.getElementById('tambahPamongForm');
+        const formData = new FormData(form);
+        const data = {};
+
+        formData.forEach((value, key) => {
+            data[key] = value;
+        });
+
+        try {
+            const response = await fetch('/api/tambah-pamong/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+                },
+                body: JSON.stringify(data),
+            });
+
+            if (response.ok) {
+                const result = await response.json();
+                alert('Data berhasil ditambahkan: ' + JSON.stringify(result));
+            } else {
+                const error = await response.json();
+                alert('Gagal menambahkan data: ' + JSON.stringify(error));
+            }
+        } catch (error) {
+            alert('Terjadi kesalahan: ' + error.message);
+        }
+    });
 </script>
 {% endblock extra_js %}
