@@ -1,0 +1,124 @@
+<ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+
+    <!-- Sidebar - Brand -->
+    <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{% url 'index' %}">
+        <div class="sidebar-brand-icon rotate-n-15">
+            <i class="fas fa-laugh-wink"></i>
+        </div>
+        <div class="sidebar-brand-text mx-3">Kegiatan <sup>2024</sup></div>
+    </a>
+
+    <!-- Divider -->
+    <hr class="sidebar-divider my-0">
+
+    <!-- Nav Item - Dashboard -->
+    <li class="nav-item {% if request.resolver_match.url_name == 'index' %} active {% endif %}">
+        <a class="nav-link" href="{% url 'index' %}">
+            <i class="fas fa-fw fa-tachometer-alt"></i>
+            <span>Dashboard</span>
+        </a>
+    </li>
+
+    <!-- Divider -->
+    <hr class="sidebar-divider">
+
+    <!-- Heading -->
+    <div class="sidebar-heading">
+        Master Data
+    </div>
+
+    <li class="nav-item {% if request.resolver_match.url_name == 'list-kegiatan' or request.resolver_match.url_name == 'edit-kegiatan' or request.resolver_match.url_name == 'tambah-kegiatan' %} active {% endif %}">
+        <a class="nav-link {% if request.resolver_match.url_name != 'list-kegiatan' and request.resolver_match.url_name != 'edit-kegiatan' and request.resolver_match.url_name != 'tambah-kegiatan' %} collapsed {% endif %}" href="#" data-toggle="collapse" data-target="#collapseDataKegiatan"
+            aria-expanded="true" aria-controls="collapseDataKegiatan">
+            <i class="fas fa-fw fa-cog"></i>
+            <span>Data Kegiatan</span>
+        </a>
+        <div id="collapseDataKegiatan" class="collapse {% if request.resolver_match.url_name == 'list-kegiatan' or request.resolver_match.url_name == 'edit-kegiatan' or request.resolver_match.url_name == 'tambah-kegiatan' %} show {% endif %}" aria-labelledby="DataKegiatan" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <a class="collapse-item {% if request.resolver_match.url_name == 'list-kegiatan' %} active {% endif %}" href="{% url 'list-kegiatan' %}">List Kegiatan</a>
+                <a class="collapse-item {% if request.resolver_match.url_name == 'tambah-kegiatan' %} active {% endif %}" href="{% url 'tambah-kegiatan' %}">Tambah Kegiatan</a>
+            </div>
+        </div>
+    </li>
+
+    <hr class="sidebar-divider">
+
+    <div class="sidebar-heading">
+        Admin
+    </div>
+
+    <li class="nav-item {% if request.resolver_match.url_name == 'list-pamong' or request.resolver_match.url_name == 'tambah-pamong' or request.resolver_match.url_name == 'edit-pamong' %} active {% endif %}">
+        <a class="nav-link {% if request.resolver_match.url_name != 'list-pamong' and request.resolver_match.url_name != 'tambah-pamong' and request.resolver_match.url_name != 'edit-pamong' %} collapsed {% endif %}" href="#" data-toggle="collapse" data-target="#collapseDataPamong"
+            aria-expanded="true" aria-controls="collapseDataPamong">
+            <i class="fas fa-fw fa-cog"></i>
+            <span>Data Pamong</span>
+        </a>
+        <div id="collapseDataPamong" class="collapse {% if request.resolver_match.url_name == 'list-pamong' or request.resolver_match.url_name == 'tambah-pamong' or request.resolver_match.url_name == 'edit-pamong' %} show {% endif %}" aria-labelledby="DataPamong" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <a class="collapse-item {% if request.resolver_match.url_name == 'list-pamong' %} active {% endif %}" href="{% url 'list-pamong' %}">List Pamong</a>
+                <!-- <a class="collapse-item {% if request.resolver_match.url_name == 'edit-pamong' %} active {% endif %}" href="{% url 'edit-pamong' %}">Edit Pamong</a> -->
+                <a class="collapse-item {% if request.resolver_match.url_name == 'tambah-pamong' %} active {% endif %}" href="{% url 'tambah-pamong' %}">Tambah Pamong</a>
+            </div>
+        </div>
+    </li>
+
+    <li class="nav-item {% if request.resolver_match.url_name == 'list-user' or request.resolver_match.url_name == 'tambah-user' %} active {% endif %}">
+        <a class="nav-link {% if request.resolver_match.url_name != 'list-user' and request.resolver_match.url_name != 'tambah-user' %} collapsed {% endif %}" href="#" data-toggle="collapse" data-target="#collapseDataUser"
+            aria-expanded="true" aria-controls="collapseDataUser">
+            <i class="fas fa-fw fa-cog"></i>
+            <span>Data User</span>
+        </a>
+        <div id="collapseDataUser" class="collapse {% if request.resolver_match.url_name == 'list-user' or request.resolver_match.url_name == 'tambah-user' %} show {% endif %}" aria-labelledby="DataUser" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <a class="collapse-item {% if request.resolver_match.url_name == 'list-user' %} active {% endif %}" href="{% url 'list-user' %}">List User</a>
+                <a class="collapse-item {% if request.resolver_match.url_name == 'tambah-user' %} active {% endif %}" href="{% url 'tambah-user' %}">Tambah User</a>
+            </div>
+        </div>
+    </li>
+
+    <!-- <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages"
+            aria-expanded="true" aria-controls="collapsePages">
+            <i class="fas fa-fw fa-folder"></i>
+            <span>Pages</span>
+        </a>
+        <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <h6 class="collapse-header">Login Screens:</h6>
+                <a class="collapse-item" href="login.html">Login</a>
+                <a class="collapse-item" href="register.html">Register</a>
+                <a class="collapse-item" href="forgot-password.html">Forgot Password</a>
+                <div class="collapse-divider"></div>
+                <h6 class="collapse-header">Other Pages:</h6>
+                <a class="collapse-item" href="404.html">404 Page</a>
+                <a class="collapse-item" href="blank.html">Blank Page</a>
+            </div>
+        </div>
+    </li>
+
+    <li class="nav-item">
+        <a class="nav-link" href="charts.html">
+            <i class="fas fa-fw fa-chart-area"></i>
+            <span>Charts</span></a>
+    </li>
+
+    <li class="nav-item">
+        <a class="nav-link" href="tables.html">
+            <i class="fas fa-fw fa-table"></i>
+            <span>Tables</span></a>
+    </li> -->
+
+    <hr class="sidebar-divider d-none d-md-block">
+
+    <div class="text-center d-none d-md-inline">
+        <button class="rounded-circle border-0" id="sidebarToggle"></button>
+    </div>
+
+    <!-- Sidebar Message -->
+    <!-- <div class="sidebar-card d-none d-lg-flex">
+        <img class="sidebar-card-illustration mb-2" src="img/undraw_rocket.svg" alt="...">
+        <p class="text-center mb-2"><strong>SB Admin Pro</strong> is packed with premium features, components, and more!</p>
+        <a class="btn btn-success btn-sm" href="https://startbootstrap.com/theme/sb-admin-pro">Upgrade to Pro!</a>
+    </div> -->
+
+</ul>

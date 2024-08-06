@@ -1,0 +1,183 @@
+{% extends 'base/base.html' %}
+
+{% load static %}
+
+{% block title %}Detail Pamong{% endblock title %}
+
+{% block extra_css %}
+
+{% endblock extra_css %}
+
+{% block content %}
+<div class="container-fluid">
+    <!-- Page Heading -->
+    <h1 class="h3 mb-4 text-gray-800">Detail Pamong</h1>
+    <!-- <p class="mb-4"></p> -->
+
+    <div id="alert-container"></div>
+
+    {% if messages %}
+    {% for message in messages %}
+        {% if 'error' in message.tags %}
+            <div class="card bg-danger text-white shadow mb-2">
+                <div class="card-body">
+                    {{ message }}
+                </div>
+            </div>
+        {% elif 'success' in message.tags %}
+            <div class="card bg-success text-white shadow mb-2">
+                <div class="card-body">
+                    {{ message }}
+                </div>
+            </div>
+        {% endif %}
+    {% endfor %}
+    {% endif %}
+
+    <form id="DetailPamongForm" method="post" enctype="multipart/form-data">
+        <div class="row">
+            {% csrf_token %}
+            <div class="col-xl-4">
+                <!-- Profile picture card -->
+                <div class="card mb-4 mb-xl-0">
+                    <div class="card-header">Foto Profile</div>
+                    <div class="card-body text-center">
+                        <!-- Profile picture image-->
+                        {% if pamong.foto %}
+                        <img id="profilePicture" class="img-account-profile rounded-circle mb-2" src="{{ pamong.foto.url }}" alt="Profile Picture" />
+                        {% else %}
+                        <img id="profilePicture" class="img-account-profile rounded-circle mb-2" src="{% static 'img/undraw_profile.svg' %}" alt="Profile Picture" />
+                        {% endif %}
+                        <!-- Profile picture help block-->
+                        <div class="small font-italic text-muted mb-4">JPG atau PNG max. 5 MB</div>
+                        <!-- Profile picture upload button-->
+                        <input type="file" id="foto" name="foto" class="form-control-file" onchange="loadFile(event)" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-8">
+                <!-- Account details card-->
+                <div class="card mb-4">
+                    <div class="card-header">Pamong Detail</div>
+                    <div class="card-body">
+                        <h4>Data Diri</h4>
+                        <div class="row gx-3 mb-3">
+                            <div class="col-md-6">
+                                <label class="small mb-1" for="inputNama">Nama</label>
+                                <input class="form-control" id="inputNama" type="text" name="nama" value="{{ pamong.nama }}" required />
+                            </div>
+                            <div class="col-md-6">
+                                <label class="small mb-1" for="inputNIK">NIK</label>
+                                <input class="form-control" id="inputNIK" type="text" name="nik" value="{{ pamong.nik }}" required />
+                            </div>
+                        </div>
+                        <div class="row gx-3 mb-3">
+                            <div class="col-md-6">
+                                <label class="small mb-1" for="inputTempatLahir">Tempat Lahir</label>
+                                <input class="form-control" id="inputTempatLahir" type="text" name="tempat_lahir" value="{{ pamong.tempat_lahir }}" required />
+                            </div>
+                            <div class="col-md-6">
+                                <label class="small mb-1" for="inputTanggalLahir">Tanggal Lahir</label>
+                                <input class="form-control" id="inputTanggalLahir" type="date" name="tanggal_lahir" value="{{ pamong.tanggal_lahir|date:'Y-m-d' }}" required />
+                            </div>
+                        </div>
+                        <div class="row gx-3 mb-3">
+                            <div class="col-md-12">
+                                <label class="small mb-1" for="inputAlamat">Alamat</label>
+                                <input class="form-control" id="inputAlamat" type="text" name="alamat" value="{{ pamong.alamat }}" required />
+                            </div>
+                        </div>
+                        <div class="row gx-3 mb-3">
+                            <div class="col-md-6">
+                                <label class="small mb-1" for="inputStatusKawin">Status Kawin</label>
+                                <select class="form-select" id="inputStatusKawin" name="status_kawin" required>
+                                    <option value="Kawin" {% if pamong.status_kawin == 'Kawin' %} selected {% endif %}>Kawin</option>
+                                    <option value="Belum Kawin" {% if pamong.status_kawin == 'Belum Kawin' %} selected {% endif %}>Belum Kawin</option>
+                                    <option value="Cerai" {% if pamong.status_kawin == 'Cerai' %} selected {% endif %}>Cerai</option>
+                                    <option value="Cerai Mati" {% if pamong.status_kawin == 'Cerai Mati' %} selected {% endif %}>Cerai Mati</option>
+                                </select>
+                            </div>                            
+                            <div class="col-md-6">
+                                <label class="small mb-1" for="inputPekerjaan">Pekerjaan</label>
+                                <input class="form-control" id="inputPekerjaan" type="text" name="pekerjaan" value="{{ pamong.pekerjaan }}" required />
+                            </div>
+                        </div>
+                        <div class="row gx-3 mb-3">
+                            <div class="col-md-3">
+                                <label class="small mb-1" for="inputGolDarah">Gol Darah</label>
+                                <select class="form-select" id="inputGolDarah" name="gol_darah" required>
+                                    <option value="A" {% if pamong.gol_darah == 'A' %} selected {% endif %}>A</option>
+                                    <option value="B" {% if pamong.gol_darah == 'B' %} selected {% endif %}>B</option>
+                                    <option value="AB" {% if pamong.gol_darah == 'AB' %} selected {% endif %}>AB</option>
+                                    <option value="O" {% if pamong.gol_darah == 'O' %} selected {% endif %}>O</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <label class="small mb-1" for="inputJenisKelamin">Jenis Kelamin</label>
+                                <select class="form-select" id="inputJenisKelamin" name="jenis_kelamin" required>
+                                    <option value="L" {% if pamong.jenis_kelamin == 'L' %} selected {% endif %}>Laki-laki</option>
+                                    <option value="P" {% if pamong.jenis_kelamin == 'P' %} selected {% endif %}>Perempuan</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="small mb-1" for="inputAgama">Agama</label>
+                                <select class="form-select" id="inputAgama" type="text" name="agama" required>
+                                    <option value="Islam" {% if pamong.agama == 'Islam' %} selected {% endif %}>Islam</option>
+                                    <option value="Kristen" {% if pamong.agama == 'Kristen' %} selected {% endif %}>Kristen</option>
+                                    <option value="Katolik" {% if pamong.agama == 'Katolik' %} selected {% endif %}>Katolik</option>
+                                    <option value="Hindu" {% if pamong.agama == 'Hindu' %} selected {% endif %}>Hindu</option>
+                                    <option value="Budha" {% if pamong.agama == 'Budha' %} selected {% endif %}>Budha</option>
+                                    <option value="Konghucu" {% if pamong.agama == 'Konghucu' %} selected {% endif %}>Konghucu</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <h4 class="mt-4">Data Pegawai</h4>
+
+                        <div class="row gx-3 mb-3">
+                            <div class="col-md-6">
+                                <label class="small mb-1" for="inputNIP">NIP</label>
+                                <input class="form-control" id="inputNIP" type="text" name="nip" value="{{ pamong.nip }}" required />
+                            </div>
+                            <div class="col-md-6">
+                                <label class="small mb-1" for="inputJabatan">Jabatan</label>
+                                <input class="form-control" id="inputJabatan" type="text" name="jabatan" value="{{ pamong.jabatan }}" required />
+                            </div>
+                        </div>
+                        <div class="row gx-3 mb-3">
+                            <div class="col-md-6">
+                                <label class="small mb-1" for="inputMasaJabatanMulai">Masa Jabatan Mulai</label>
+                                <input class="form-control" id="inputMasaJabatanMulai" type="number" name="masa_jabatan_mulai" value="{{ pamong.masa_jabatan_mulai }}" required />
+                            </div>
+                            <div class="col-md-6">
+                                <label class="small mb-1" for="inputMasaJabatanSelesai">Masa Jabatan Selesai</label>
+                                <input class="form-control" id="inputMasaJabatanSelesai" type="number" name="masa_jabatan_selesai" value="{{ pamong.masa_jabatan_selesai }}" required />
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="small mb-1" for="inputPendidikanTerakhir">Pendidikan Terakhir</label>
+                            <input class="form-control" id="inputPendidikanTerakhir" type="text" name="pendidikan_terakhir" value="{{ pamong.pendidikan_terakhir }}" required />
+                        </div>
+                        <button class="btn btn-primary" type="submit" id="submitPamong">Simpan Perubahan</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+{% endblock content %}
+
+{% block extra_js %}
+<script>
+    // Script untuk menampilkan gambar yang diunggah
+    function loadFile(event) {
+        var image = document.getElementById('profilePicture');
+        image.src = URL.createObjectURL(event.target.files[0]);
+        image.onload = function() {
+            URL.revokeObjectURL(image.src) // Free memory
+        }
+    }
+</script>
+{% endblock extra_js %}

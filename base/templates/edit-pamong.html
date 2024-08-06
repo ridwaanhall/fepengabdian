@@ -1,0 +1,158 @@
+{% extends 'base/base.html' %}
+
+{% load static %}
+
+{% block title %}Edit Pamong{% endblock title %}
+
+{% block extra_css %}
+
+{% endblock extra_css %}
+
+{% block content %}
+<div class="container-fluid">
+
+    <!-- Page Heading -->
+    <h1 class="h3 mb-4 text-gray-800">Edit Pamong</h1>
+    <!-- <p class="mb-4"></p> -->
+
+    <div class="row">
+        <div class="col-xl-4">
+            <!-- Profile picture card -->
+            <div class="card mb-4 mb-xl-0">
+                <div class="card-header">Foto Profile</div>
+                <div class="card-body text-center">
+                    <!-- Profile picture image-->
+                    <img class="img-account-profile rounded-circle mb-2" src="{% static 'img/undraw_profile.svg' %}" alt="" />
+                    <!-- Profile picture help block-->
+                    <div class="small font-italic text-muted mb-4">JPG atau PNG max. 5 MB</div>
+                    <!-- Profile picture upload button-->
+                    <button class="btn btn-primary" type="button">Upload gambar baru</button>
+                </div>
+            </div>
+        </div>
+    
+        <div class="col-xl-8">
+            <!-- Account details card-->
+            <div class="card mb-4">
+                <div class="card-header">Pamong Detail</div>
+                <div class="card-body">
+                    <form>
+                        <h4>Data Diri</h4>
+                        <div class="row gx-3 mb-3">
+                            <div class="col-md-6">
+                                <label class="small mb-1" for="inputNama">Nama</label>
+                                <input class="form-control" id="inputNama" type="text" placeholder="Masukkan nama" value="">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="small mb-1" for="inputNIK">NIK</label>
+                                <input class="form-control" id="inputNIK" type="text" placeholder="Masukkan NIK" value="">
+                            </div>
+                        </div>
+                        <div class="row gx-3 mb-3">
+                            <div class="col-md-6">
+                                <label class="small mb-1" for="inputTempatLahir">Tempat Lahir</label>
+                                <input class="form-control" id="inputTempatLahir" type="text" placeholder="Masukkan tempat lahir" value="">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="small mb-1" for="inputTanggalLahir">Tanggal Lahir</label>
+                                <input class="form-control" id="inputTanggalLahir" type="date" placeholder="Masukkan tanggal lahir" value="">
+                            </div>
+                        </div>
+                        <div class="row gx-3 mb-3">
+                            <div class="col-md-12">
+                                <label class="small mb-1" for="inputAlamat">Alamat</label>
+                                <textarea class="form-control" id="inputAlamat" type="text" placeholder="Masukkan alamat" value=""></textarea>
+                            </div>
+                        </div>
+                        <div class="row gx-3 mb-3">
+                            <div class="col-md-6">
+                                <label class="small mb-1" for="inputStatusKawin">Status Kawin</label>
+                                <select class="form-select" id="inputStatusKawin">
+                                    <option value="" disabled="">Select status kawin:</option>
+                                    <option value="Belum Kawin" selected="">Belum Kawin</option>
+                                    <option value="Kawin">Kawin</option>
+                                    <option value="Cerai Hidup">Cerai Hidup</option>
+                                    <option value="Cerai Mati">Cerai Mati</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="small mb-1" for="inputPekerjaan">Pekerjaan</label>
+                                <input class="form-control" id="inputPekerjaan" type="text" placeholder="Masukkan pekerjaan" value="">
+                            </div>
+                        </div>
+                        <div class="row gx-3 mb-3">
+                            <div class="col-md-3">
+                                <label class="small mb-1" for="inputGolDarah">Gol Darah</label>
+                                <select class="form-select" id="inputGolDarah">
+                                    <option value="" disabled="">Select gol darah:</option>
+                                    <option value="A">A</option>
+                                    <option value="B">B</option>
+                                    <option value="AB">AB</option>
+                                    <option value="O" selected="">O</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <label class="small mb-1" for="inputJenisKelamin">Jenis Kelamin</label>
+                                <select class="form-select" id="inputJenisKelamin">
+                                    <option value="" disabled="">Select jenis kelamin:</option>
+                                    <option value="L" selected="">L</option>
+                                    <option value="P">P</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="small mb-1" for="inputAgama">Agama</label>
+                                <select class="form-select" id="inputAgama">
+                                    <option value="" disabled="">Select agama:</option>
+                                    <option value="Islam" selected="">Islam</option>
+                                    <option value="Kristen">Kristen</option>
+                                    <option value="Katolik">Katolik</option>
+                                    <option value="Hindu">Hindu</option>
+                                    <option value="Budha">Budha</option>
+                                    <option value="Konghucu">Konghucu</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <h4 class="mt-4">Data Pegawai</h4>
+
+                        <div class="row gx-3 mb-3">
+                            <div class="col-md-6">
+                                <label class="small mb-1" for="inputNIP">NIP</label>
+                                <input class="form-control" id="inputNIP" type="text" placeholder="Masukkan NIP" value="">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="small mb-1" for="inputJabatan">Jabatan</label>
+                                <input class="form-control" id="inputJabatan" type="text" placeholder="Masukkan jabatan" value="">
+                            </div>
+                        </div>
+                        <div class="row gx-3 mb-3">
+                            <div class="col-md-6">
+                                <label class="small mb-1" for="inputMasaJabatanMulai">Masa Jabatan Mulai</label>
+                                <input class="form-control" id="inputMasaJabatanMulai" type="number" placeholder="Masukkan masa jabatan mulai" value="">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="small mb-1" for="inputMasaJabatanSelesai">Masa Jabatan Selesai</label>
+                                <input class="form-control" id="inputMasaJabatanSelesai" type="number" placeholder="Masukkan masa jabatan selesai" value="">
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="small mb-1" for="inputPendidikanTerakhir">Pendidikan Terakhir</label>
+                            <input class="form-control" id="inputPendidikanTerakhir" type="text" placeholder="Masukkan pendidikan terakhir" value="">
+                        </div>
+                        <div class="mb-3">
+                            <label class="small mb-1" for="inputGambar">Gambar</label>
+                            <input class="form-control" id="inputGambar" type="url" placeholder="Masukkan gambar" value="">
+                        </div>
+                        <button class="btn btn-primary" type="button">Simpan Perubahan</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+{% endblock content %}
+
+{% block extra_js %}
+
+{% endblock extra_js %}

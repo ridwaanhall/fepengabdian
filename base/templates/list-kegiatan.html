@@ -1,0 +1,152 @@
+{% extends 'base/base.html' %}
+
+{% load static %}
+
+{% block title %}List Kegiatan{% endblock title %}
+
+{% block extra_css %}
+<link href="{% static 'vendor/datatables/dataTables.bootstrap4.min.css' %}" rel="stylesheet">
+{% endblock extra_css %}
+
+{% block content %}
+<div class="container-fluid">
+
+    <!-- Page Heading -->
+    <h1 class="h3 mb-2 text-gray-800">Data Kegiatan</h1>
+    <p class="mb-4">Data Kegiatan adalah data Perangkat Desa yang terdaftar dalam Sistem Pendataan Kegiatan Desa</p>
+
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">List Data Kegiatan</h6>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>Nama Kegiatan</th>
+                            <th>Tanggal</th>
+                            <th>Tempat</th>
+                            <th>Deskripsi</th>
+                            <th>Nama Pamong</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tfoot>
+                        <tr>
+                            <th>Nama Kegiatan</th>
+                            <th>Tanggal</th>
+                            <th>Tempat</th>
+                            <th>Deskripsi</th>
+                            <th>Nama Pamong</th>
+                            <th>Action</th>
+                        </tr>
+                    </tfoot>
+                    <tbody>
+                        <tr>
+                            <td>Rapat Koordinasi</td>
+                            <td>2024-08-01</td>
+                            <td>Balai Desa</td>
+                            <td>Rapat koordinasi antara pamong dan masyarakat untuk membahas rencana program kerja.</td>
+                            <td>Ridwan Halim</td>
+                            <td>
+                                <a href="#" class="btn btn-info mb-1 btn-sm">
+                                    <i class="fa fa-eye"></i>
+                                </a>
+                                <a href="#" class="btn btn-success mb-1 btn-sm">
+                                    <i class="fa fa-edit"></i>
+                                </a>
+                                <a href="#" class="btn btn-danger mb-1 btn-sm">
+                                    <i class="fa fa-trash"></i>
+                                </a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Penyerahan Bantuan</td>
+                            <td>2024-08-05</td>
+                            <td>Gedung Serbaguna</td>
+                            <td>Penyerahan bantuan sosial kepada keluarga kurang mampu.</td>
+                            <td>Alif Setiawan</td>
+                            <td>
+                                <a href="#" class="btn btn-info mb-1 btn-sm">
+                                    <i class="fa fa-eye"></i>
+                                </a>
+                                <a href="#" class="btn btn-success mb-1 btn-sm">
+                                    <i class="fa fa-edit"></i>
+                                </a>
+                                <a href="#" class="btn btn-danger mb-1 btn-sm">
+                                    <i class="fa fa-trash"></i>
+                                </a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Pelatihan Keterampilan</td>
+                            <td>2024-08-10</td>
+                            <td>Ruangan Pelatihan</td>
+                            <td>Pelatihan keterampilan kerja untuk meningkatkan kemampuan masyarakat.</td>
+                            <td>Maria Sari</td>
+                            <td>
+                                <a href="#" class="btn btn-info mb-1 btn-sm">
+                                    <i class="fa fa-eye"></i>
+                                </a>
+                                <a href="#" class="btn btn-success mb-1 btn-sm">
+                                    <i class="fa fa-edit"></i>
+                                </a>
+                                <a href="#" class="btn btn-danger mb-1 btn-sm">
+                                    <i class="fa fa-trash"></i>
+                                </a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Festival Budaya</td>
+                            <td>2024-08-15</td>
+                            <td>Lapangan Desa</td>
+                            <td>Festival budaya untuk melestarikan tradisi lokal dan mempererat hubungan antar warga.</td>
+                            <td>Hadi Prabowo</td>
+                            <td>
+                                <a href="#" class="btn btn-info mb-1 btn-sm">
+                                    <i class="fa fa-eye"></i>
+                                </a>
+                                <a href="#" class="btn btn-success mb-1 btn-sm">
+                                    <i class="fa fa-edit"></i>
+                                </a>
+                                <a href="#" class="btn btn-danger mb-1 btn-sm">
+                                    <i class="fa fa-trash"></i>
+                                </a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Pengobatan Gratis</td>
+                            <td>2024-08-20</td>
+                            <td>Puskesmas</td>
+                            <td>Pengobatan gratis bagi warga yang membutuhkan pelayanan medis.</td>
+                            <td>Joko Widodo</td>
+                            <td>
+                                <a href="#" class="btn btn-info mb-1 btn-sm">
+                                    <i class="fa fa-eye"></i>
+                                </a>
+                                <a href="#" class="btn btn-success mb-1 btn-sm">
+                                    <i class="fa fa-edit"></i>
+                                </a>
+                                <a href="#" class="btn btn-danger mb-1 btn-sm">
+                                    <i class="fa fa-trash"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>
+{% endblock content %}
+
+{% block extra_js %}
+    <!-- Page level plugins -->
+    <script src="{% static 'vendor/datatables/jquery.dataTables.min.js' %}"></script>
+    <script src="{% static 'vendor/datatables/dataTables.bootstrap4.min.js' %}"></script>
+
+    <!-- Page level custom scripts -->
+    <script src="{% static 'js/demo/datatables-demo.js' %}"></script>
+{% endblock extra_js %}

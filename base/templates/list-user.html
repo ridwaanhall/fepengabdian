@@ -1,0 +1,152 @@
+{% extends 'base/base.html' %}
+
+{% load static %}
+
+{% block title %}List User{% endblock title %}
+
+{% block extra_css %}
+<link href="{% static 'vendor/datatables/dataTables.bootstrap4.min.css' %}" rel="stylesheet">
+{% endblock extra_css %}
+
+{% block content %}
+<div class="container-fluid">
+
+    <!-- Page Heading -->
+    <h1 class="h3 mb-2 text-gray-800">Data User</h1>
+    <p class="mb-4">Data User adalah data Perangkat Desa yang terdaftar dalam Sistem Pendataan Kegiatan Desa</p>
+
+    {% if messages %}
+    {% for message in messages %}
+        {% if 'error' in message.tags %}
+            <div class="card bg-danger text-white shadow mb-2">
+                <div class="card-body">
+                    {{ message }}
+                </div>
+            </div>
+        {% elif 'success' in message.tags %}
+            <div class="card bg-success text-white shadow mb-2">
+                <div class="card-body">
+                    {{ message }}
+                </div>
+            </div>
+        {% endif %}
+    {% endfor %}
+    {% endif %}
+
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">List Data User</h6>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>NIP</th>
+                            <th>Name</th>
+                            <th>Username</th>
+                            <!-- <th>Password Text</th> -->
+                            <!-- <th>Password Encrypted</th> -->
+                            <th>Email</th>
+                            <th>Is Admin</th>
+                            <th>Is Staff</th>
+                            <th>Is Active</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tfoot>
+                        <tr>
+                            <th>ID</th>
+                            <th>NIP</th>
+                            <th>Name</th>
+                            <th>Username</th>
+                            <!-- <th>Password Text</th> -->
+                            <th>Email</th>
+                            <th>Is Admin</th>
+                            <th>Is Staff</th>
+                            <th>Is Active</th>
+                            <th>Actions</th>
+                        </tr>
+                    </tfoot>
+                    <tbody>
+                        {% for user in users %}
+                        <tr>
+                            <td>{{ user.id }}</td>
+                            <td>{{ user.pamong.nip }}</td>
+                            <td>{{ user.pamong.nama }}</td>
+                            <td>{{ user.username }}</td>
+                            <!-- <td>{{ user.password_text }}</td> -->
+                            <td>{{ user.email }}</td>
+                            <td>{{ user.is_admin }}</td>
+                            <td>{{ user.is_staff }}</td>
+                            <td>{{ user.is_active }}</td>
+                            <td>
+                                <a href="{% url 'detail-edit-user' user.id %}" class="btn btn-success mb-1 btn-sm">
+                                    <i class="fa fa-edit"></i>
+                                </a>
+                                <a href="{% url 'hapus-user' user.id %}" class="btn btn-danger mb-1 btn-sm btn-delete">
+                                    <i class="fa fa-trash"></i>
+                                </a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+<!-- Modal -->
+<div class="modal fade" id="confirmDeleteModal" tabindex="-1" role="dialog" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="confirmDeleteModalLabel">Konfirmasi Penghapusan</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Apakah Anda yakin ingin menghapus data ini?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                <a id="confirmDeleteButton" href="#" class="btn btn-danger">Hapus</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+</div>
+{% endblock content %}
+
+{% block extra_js %}
+    <!-- Page level plugins -->
+    <script src="{% static 'vendor/datatables/jquery.dataTables.min.js' %}"></script>
+    <script src="{% static 'vendor/datatables/dataTables.bootstrap4.min.js' %}"></script>
+
+    <!-- Page level custom scripts -->
+    <script src="{% static 'js/demo/datatables-demo.js' %}"></script>
+
+    <script>
+        // Handle delete button click
+        function handleDeleteClick(event) {
+            event.preventDefault(); // Prevent the default link behavior
+    
+            var url = event.currentTarget.getAttribute('href');
+            var modal = new bootstrap.Modal(document.getElementById('confirmDeleteModal'));
+            
+            // Set the confirm button's href to the delete URL
+            document.getElementById('confirmDeleteButton').setAttribute('href', url);
+    
+            // Show the modal
+            modal.show();
+        }
+    
+        // Add event listeners to all delete buttons
+        document.querySelectorAll('.btn-delete').forEach(function(button) {
+            button.addEventListener('click', handleDeleteClick);
+        });
+    </script>
+    
+{% endblock extra_js %}

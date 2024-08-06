@@ -1,0 +1,154 @@
+{% extends 'base/base.html' %}
+
+{% load static %}
+
+{% block title %}List Pamong{% endblock title %}
+
+{% block extra_css %}
+<link href="{% static 'vendor/datatables/dataTables.bootstrap4.min.css' %}" rel="stylesheet">
+{% endblock extra_css %}
+
+{% block content %}
+<div class="container-fluid">
+
+    <!-- Page Heading -->
+    <h1 class="h3 mb-2 text-gray-800">Data Pamong</h1>
+    <p class="mb-4">Data Pamong adalah data Perangkat Desa yang terdaftar dalam Sistem Pendataan Kegiatan Desa</p>
+
+    {% if messages %}
+    {% for message in messages %}
+        {% if 'error' in message.tags %}
+            <div class="card bg-danger text-white shadow mb-2">
+                <div class="card-body">
+                    {{ message }}
+                </div>
+            </div>
+        {% elif 'success' in message.tags %}
+            <div class="card bg-success text-white shadow mb-2">
+                <div class="card-body">
+                    {{ message }}
+                </div>
+            </div>
+        {% endif %}
+    {% endfor %}
+    {% endif %}
+
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">List Data Pamong</h6>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Profile Photo</th>
+                            <th>Nama</th>
+                            <th>NIP</th>
+                            <th>Pekerjaan</th>
+                            <th>Jabatan</th>
+                            <th>Masa Jabatan</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tfoot>
+                        <tr>
+                            <th>ID</th>
+                            <th>Profile Photo</th>
+                            <th>Nama</th>
+                            <th>NIP</th>
+                            <th>Pekerjaan</th>
+                            <th>Jabatan</th>
+                            <th>Masa Jabatan</th>
+                            <th>Action</th>
+                        </tr>
+                    </tfoot>
+                    <tbody>
+                        {% for p in pamong %}
+                        <tr>
+                            <td>{{ p.id }}</td>
+                            <td class="text-center">
+                                {% if p.foto %}
+                                    <img src="{{ p.foto.url }}" class="rounded-circle" alt="Profile Photo {{ p.nama }}" width="50px">
+                                {% else %}
+                                    <img src="{% static 'img/undraw_profile.svg' %}" class="rounded-circle" alt="Profile Photo {{ p.nama }}" width="50px">
+                                {% endif %}
+                            </td>
+                            <td>{{ p.nama }}</td>
+                            <td>{{ p.nip }}</td>
+                            <td>{{ p.pekerjaan }}</td>
+                            <td>{{ p.jabatan }}</td>
+                            <td>{{ p.masa_jabatan_mulai }}-{{ p.masa_jabatan_selesai }}</td>
+                            <td>
+                                <!-- <a href="#" class="btn btn-info mb-1 btn-sm">
+                                    <i class="fa fa-eye"></i>
+                                </a> -->
+                                <a href="{% url 'detail-edit-pamong' p.id %}" class="btn btn-success mb-1 btn-sm">
+                                    <i class="fa fa-edit"></i>
+                                </a>
+                                <a href="{% url 'hapus-pamong' p.id %}" class="btn btn-danger mb-1 btn-sm btn-delete">
+                                    <i class="fa fa-trash"></i>
+                                </a>                                
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+<!-- Modal -->
+<div class="modal fade" id="confirmDeleteModal" tabindex="-1" role="dialog" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="confirmDeleteModalLabel">Konfirmasi Penghapusan</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Apakah Anda yakin ingin menghapus data ini?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                <a id="confirmDeleteButton" href="#" class="btn btn-danger">Hapus</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+</div>
+{% endblock content %}
+
+{% block extra_js %}
+    <!-- Page level plugins -->
+    <script src="{% static 'vendor/datatables/jquery.dataTables.min.js' %}"></script>
+    <script src="{% static 'vendor/datatables/dataTables.bootstrap4.min.js' %}"></script>
+
+    <!-- Page level custom scripts -->
+    <script src="{% static 'js/demo/datatables-demo.js' %}"></script>
+
+    <script>
+        // Handle delete button click
+        function handleDeleteClick(event) {
+            event.preventDefault(); // Prevent the default link behavior
+    
+            var url = event.currentTarget.getAttribute('href');
+            var modal = new bootstrap.Modal(document.getElementById('confirmDeleteModal'));
+            
+            // Set the confirm button's href to the delete URL
+            document.getElementById('confirmDeleteButton').setAttribute('href', url);
+    
+            // Show the modal
+            modal.show();
+        }
+    
+        // Add event listeners to all delete buttons
+        document.querySelectorAll('.btn-delete').forEach(function(button) {
+            button.addEventListener('click', handleDeleteClick);
+        });
+    </script>
+    
+{% endblock extra_js %}

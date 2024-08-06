@@ -1,0 +1,95 @@
+{% extends 'base/base.html' %}
+
+{% load static %}
+
+{% block title %}Tambah Kegiatan{% endblock title %}
+
+{% block extra_css %}
+
+{% endblock extra_css %}
+
+{% block content %}
+<div class="container-fluid">
+
+    <!-- Page Heading -->
+    <h1 class="h3 mb-4 text-gray-800">Tambah Kegiatan</h1>
+    <!-- <p class="mb-4"></p> -->
+
+    <div class="row">
+        <div class="col-xl-4">
+            <!-- Profile picture card -->
+            <div class="card mb-4 mb-xl-0">
+                <div class="card-header">Foto Kegiatan</div>
+                <div class="card-body text-center">
+                    <!-- Profile picture image-->
+                    <img class="img-account-profile rounded-circle mb-2" src="{% static 'img/undraw_profile.svg' %}" alt="Gambar Kegiatan" />
+                    <!-- Profile picture help block-->
+                    <div class="small font-italic text-muted mb-4">JPG atau PNG max. 5 MB</div>
+                    <!-- Profile picture upload button-->
+                    <button class="btn btn-primary" type="button">Upload gambar baru</button>
+                </div>
+            </div>
+        </div>
+    
+        <div class="col-xl-8">
+            <!-- Account details card-->
+            <div class="card mb-4">
+                <div class="card-header">Detail Kegiatan</div>
+                <div class="card-body">
+                    <form>
+                        <!-- Form Row-->
+                        <div class="row gx-3 mb-3">
+                            <!-- Form Group (Nama Kegiatan)-->
+                            <div class="col-md-6">
+                                <label class="small mb-1" for="inputNamaKegiatan">Nama Kegiatan</label>
+                                <input class="form-control" id="inputNamaKegiatan" type="text" placeholder="Masukkan nama kegiatan" value="{{ nama_kegiatan }}">
+                            </div>
+                            <!-- Form Group (Tanggal)-->
+                            <div class="col-md-6">
+                                <label class="small mb-1" for="inputTanggal">Tanggal</label>
+                                <input class="form-control" id="inputTanggal" type="date" placeholder="Pilih tanggal" value="{{ tanggal }}">
+                            </div>
+                        </div>
+                        <!-- Form Row-->
+                        <div class="row gx-3 mb-3">
+                            <!-- Form Group (Tempat)-->
+                            <div class="col-md-6">
+                                <label class="small mb-1" for="inputTempat">Tempat</label>
+                                <input class="form-control" id="inputTempat" type="text" placeholder="Masukkan tempat" value="{{ tempat }}">
+                            </div>
+                            <!-- Form Group (Deskripsi)-->
+                            <div class="col-md-6">
+                                <label class="small mb-1" for="inputDeskripsi">Deskripsi</label>
+                                <input class="form-control" id="inputDeskripsi" type="text" placeholder="Masukkan deskripsi" value="{{ deskripsi }}">
+                            </div>
+                        </div>
+                        <!-- Form Row-->
+                        <div class="row gx-3 mb-3">
+                            <!-- Form Group (Gambar)-->
+                            <div class="col-md-12">
+                                <label class="small mb-1" for="inputGambar">Gambar</label>
+                                <input class="form-control" id="inputGambar" type="text" placeholder="URL gambar" value="{{ gambar }}">
+                            </div>
+                        </div>
+                        <!-- Form Row-->
+                        <div class="row gx-3 mb-3">
+                            <!-- Form Group (User ID)-->
+                            <div class="col-md-12">
+                                <label class="small mb-1" for="inputUserId">User ID</label>
+                                <input class="form-control" id="inputUserId" type="number" placeholder="Masukkan User ID" value="{{ user_id }}">
+                            </div>
+                        </div>
+                        <!-- Submit button-->
+                        <button class="btn btn-primary" type="button">Tambah Kegiatan</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>    
+
+</div>
+{% endblock content %}
+
+{% block extra_js %}
+
+{% endblock extra_js %}
