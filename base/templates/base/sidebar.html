@@ -56,7 +56,6 @@
         <div id="collapseDataPamong" class="collapse {% if request.resolver_match.url_name == 'list-pamong' or request.resolver_match.url_name == 'tambah-pamong' or request.resolver_match.url_name == 'edit-pamong' %} show {% endif %}" aria-labelledby="DataPamong" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
                 <a class="collapse-item {% if request.resolver_match.url_name == 'list-pamong' %} active {% endif %}" href="{% url 'list-pamong' %}">List Pamong</a>
-                <!-- <a class="collapse-item {% if request.resolver_match.url_name == 'edit-pamong' %} active {% endif %}" href="{% url 'edit-pamong' %}">Edit Pamong</a> -->
                 <a class="collapse-item {% if request.resolver_match.url_name == 'tambah-pamong' %} active {% endif %}" href="{% url 'tambah-pamong' %}">Tambah Pamong</a>
             </div>
         </div>
