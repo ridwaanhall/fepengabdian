@@ -7,6 +7,7 @@ urlpatterns = [
     
     # auth
     path('login/', views.login, name='admin-login'),
+    path('logout/', views.logout, name='admin-logout'),
     path('forgot-password/', views.forgot_password, name='forgot-password'),
     
     # pamong

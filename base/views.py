@@ -1,5 +1,7 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from django.contrib import messages
 from django.http import HttpResponse
+import requests
 
 
 # check
@@ -9,7 +11,64 @@ from django.http import HttpResponse
 
 # auth
 def login(request):
-    return render(request, 'login.html')
+    if request.method == "POST":
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+
+        # Prepare the API request
+        url = 'https://technological-adriena-taufiqdp-d94bbf04.koyeb.app/auth/admin/token'
+        payload = {
+            'username': username,
+            'password': password
+        }
+        headers = {
+            'accept': 'application/json',
+            'Content-Type': 'application/x-www-form-urlencoded'
+        }
+
+        # Send the POST request to get the access token
+        response = requests.post(url, data=payload, headers=headers)
+
+        if response.status_code == 200:
+            # If successful, extract the access token and refresh token
+            token_data = response.json()
+            access_token = token_data['access_token']
+
+            # Store the tokens in session
+            request.session['access_token'] = access_token
+
+            # Redirect to dashboard
+            return redirect('dashboard')
+        else:
+            # If failed, show an error message
+            messages.error(request, "Login failed. Please check your username and password.")
+            return redirect('admin-login')
+
+    return render(request, 'admin-login.html')
+
+def logout(request):
+    request.session.flush()
+    return redirect('admin-login')
+
+def refresh_token(request):
+    url = 'https://technological-adriena-taufiqdp-d94bbf04.koyeb.app/auth/refresh-token'
+    headers = {
+        'accept': 'application/json',
+        'Authorization': f'Bearer {request.session.get("access_token")}'
+    }
+
+    # Send the POST request to refresh the access token
+    response = requests.post(url, headers=headers)
+
+    if response.status_code == 200:
+        # Update the access token in session
+        token_data = response.json()
+        request.session['access_token'] = token_data['access_token']
+        return True
+    else:
+        # Handle failure (e.g., force logout or notify user)
+        messages.error(request, "Session expired. Please log in again.")
+        return False
 
 def forgot_password(request):
     return render(request, 'forgot-password.html')
@@ -17,6 +76,15 @@ def forgot_password(request):
 
 # dashboard
 def dashboard(request):
+    # Check if the token exists
+    if 'access_token' not in request.session:
+        return redirect('admin-login')
+
+    # Optionally, refresh the token before making API calls
+    if not refresh_token(request):
+        return redirect('admin-login')
+
+    # Your logic to display the dashboard
     return render(request, 'dashboard.html')
 
 
