@@ -57,16 +57,13 @@ def refresh_token(request):
         'Authorization': f'Bearer {request.session.get("access_token")}'
     }
 
-    # Send the POST request to refresh the access token
     response = requests.post(url, headers=headers)
 
     if response.status_code == 200:
-        # Update the access token in session
         token_data = response.json()
         request.session['access_token'] = token_data['access_token']
         return True
     else:
-        # Handle failure (e.g., force logout or notify user)
         messages.error(request, "Session expired. Please log in again.")
         return False
 
@@ -76,15 +73,12 @@ def forgot_password(request):
 
 # dashboard
 def dashboard(request):
-    # Check if the token exists
     if 'access_token' not in request.session:
         return redirect('admin-login')
 
-    # Optionally, refresh the token before making API calls
     if not refresh_token(request):
         return redirect('admin-login')
 
-    # Your logic to display the dashboard
     return render(request, 'dashboard.html')
 
 
