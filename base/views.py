@@ -71,6 +71,27 @@ def forgot_password(request):
     return render(request, 'forgot-password.html')
 
 
+# get user data
+def get_user_data(request):
+    access_token = request.session.get('access_token')
+    if not access_token:
+        return redirect('admin-login')
+
+    url = 'https://technological-adriena-taufiqdp-d94bbf04.koyeb.app/users/me'
+    
+    headers = {
+        'accept': 'application/json',
+        'Authorization': f'Bearer {access_token}'
+    }
+
+    response = requests.get(url, headers=headers)
+
+    if response.status_code == 200:
+        user_data = response.json()
+        return user_data
+    else:
+        return None
+
 # dashboard
 def dashboard(request):
     if 'access_token' not in request.session:
@@ -78,8 +99,14 @@ def dashboard(request):
 
     if not refresh_token(request):
         return redirect('admin-login')
+    
+    user_data = get_user_data(request)
+    
+    context = {
+        'user_data': user_data
+    }
 
-    return render(request, 'dashboard.html')
+    return render(request, 'dashboard.html', context)
 
 
 # pamong
