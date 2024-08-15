@@ -65,12 +65,12 @@
                         </tr>
                     </tfoot>
                     <tbody>
-                        {% for p in pamong %}
+                        {% for p in pamong_list %}
                         <tr>
                             <td>{{ p.id }}</td>
                             <td class="text-center">
-                                {% if p.foto %}
-                                    <img src="{{ p.foto.url }}" class="rounded-circle" alt="Profile Photo {{ p.nama }}" width="50px">
+                                {% if p.gambar %}
+                                    <img src="{{ p.gambar }}" class="rounded-circle" alt="Profile Photo {{ p.nama }}" width="50px">
                                 {% else %}
                                     <img src="{% static 'img/undraw_profile.svg' %}" class="rounded-circle" alt="Profile Photo {{ p.nama }}" width="50px">
                                 {% endif %}
@@ -81,20 +81,17 @@
                             <td>{{ p.jabatan }}</td>
                             <td>{{ p.masa_jabatan_mulai }}-{{ p.masa_jabatan_selesai }}</td>
                             <td>
-                                <!-- <a href="#" class="btn btn-info mb-1 btn-sm">
-                                    <i class="fa fa-eye"></i>
-                                </a> -->
-                                <a href="{% url 'detail-edit-pamong' p.id %}" class="btn btn-success mb-1 btn-sm">
+                                <a href="{% url 'detail-edit-pamong' %}" class="btn btn-success mb-1 btn-sm">
                                     <i class="fa fa-edit"></i>
                                 </a>
-                                <a href="{% url 'hapus-pamong' p.id %}" class="btn btn-danger mb-1 btn-sm btn-delete">
+                                <!-- <a href="hapus-pamong" class="btn btn-danger mb-1 btn-sm btn-delete">
                                     <i class="fa fa-trash"></i>
-                                </a>                                
+                                </a>                                 -->
                             </td>
                         </tr>
                         {% endfor %}
                     </tbody>
-                </table>
+                </table>                
             </div>
         </div>
     </div>

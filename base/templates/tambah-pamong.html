@@ -17,23 +17,16 @@
     <div id="alert-container"></div>
     {% if messages %}
     {% for message in messages %}
-        {% if 'error' in message.tags %}
-            <div class="card bg-danger text-white shadow mb-2">
-                <div class="card-body">
-                    {{ message }}
-                </div>
+        <div class="{% if message.tags == 'error' %}card bg-danger text-white shadow mb-2{% elif message.tags == 'success' %}card bg-success text-white shadow mb-2{% endif %}">
+            <div class="card-body">
+                {{ message }}
             </div>
-        {% elif 'success' in message.tags %}
-            <div class="card bg-success text-white shadow mb-2">
-                <div class="card-body">
-                    {{ message }}
-                </div>
-            </div>
-        {% endif %}
+        </div>
     {% endfor %}
     {% endif %}
 
-    <form id="tambahPamongForm">
+
+    <form id="tambahPamongForm" method="post" enctype="multipart/form-data">
         {% csrf_token %}
         <div class="row">
             <div class="col-xl-4">
@@ -148,7 +141,7 @@
                             <label class="small mb-1" for="inputPendidikanTerakhir">Pendidikan Terakhir</label>
                             <input class="form-control" id="inputPendidikanTerakhir" type="text" name="pendidikan_terakhir" required />
                         </div>
-                        <button class="btn btn-primary" type="button" id="submitPamong">Tambah Pamong</button>
+                        <button class="btn btn-primary" type="submit">Tambah Pamong</button>
                     </div>
                 </div>
             </div>
@@ -170,35 +163,6 @@
     }
 </script>
 <script>
-    document.getElementById('submitPamong').addEventListener('click', async () => {
-        const form = document.getElementById('tambahPamongForm');
-        const formData = new FormData(form);
-        const data = {};
 
-        formData.forEach((value, key) => {
-            data[key] = value;
-        });
-
-        try {
-            const response = await fetch('/api/tambah-pamong/', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
-                },
-                body: JSON.stringify(data),
-            });
-
-            if (response.ok) {
-                const result = await response.json();
-                alert('Data berhasil ditambahkan: ' + JSON.stringify(result));
-            } else {
-                const error = await response.json();
-                alert('Gagal menambahkan data: ' + JSON.stringify(error));
-            }
-        } catch (error) {
-            alert('Terjadi kesalahan: ' + error.message);
-        }
-    });
 </script>
 {% endblock extra_js %}

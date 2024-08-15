@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.http import HttpResponse
 import requests
+import json
 
 
 # check
@@ -36,6 +37,9 @@ def login(request):
 
             # Store the tokens in session
             request.session['access_token'] = access_token
+            
+            # set the success message
+            messages.success(request, "Login successful.")
 
             # Redirect to dashboard
             return redirect('dashboard')
@@ -72,7 +76,7 @@ def forgot_password(request):
 
 
 # get user data
-def get_user_data(request):
+def get_admin_data(request):
     access_token = request.session.get('access_token')
     if not access_token:
         return redirect('admin-login')
@@ -87,8 +91,8 @@ def get_user_data(request):
     response = requests.get(url, headers=headers)
 
     if response.status_code == 200:
-        user_data = response.json()
-        return user_data
+        admin_data = response.json()
+        return admin_data
     else:
         return None
 
@@ -100,10 +104,10 @@ def dashboard(request):
     if not refresh_token(request):
         return redirect('admin-login')
     
-    user_data = get_user_data(request)
+    admin_data = get_admin_data(request)
     
     context = {
-        'user_data': user_data
+        'admin_data': admin_data
     }
 
     return render(request, 'dashboard.html', context)
@@ -111,13 +115,108 @@ def dashboard(request):
 
 # pamong
 def list_pamong(request):
-    return render(request, 'list-pamong.html')
+    if 'access_token' not in request.session:
+        return redirect('admin-login')
+
+    if not refresh_token(request):
+        return redirect('admin-login')
+    
+    admin_data = get_admin_data(request)
+    
+    # get access token
+    access_token = request.session.get('access_token')
+    
+    api_url = 'https://technological-adriena-taufiqdp-d94bbf04.koyeb.app/admin/pamong'
+    headers = {
+        'Accept': 'application/json',
+        'Authorization': f'Bearer {access_token}'  # Menyertakan token dalam header
+    }
+
+    # Mengirim permintaan GET ke API eksternal
+    response = requests.get(api_url, headers=headers)
+
+    # Cek status code
+    if response.status_code == 200:
+        pamong_list = response.json()  # Mengambil data JSON dari respons
+    else:
+        pamong_list = []
+    
+    context = {
+        'admin_data': admin_data,
+        'pamong_list': pamong_list
+    }
+    return render(request, 'list-pamong.html', context)
 
 def detail_edit_pamong(request):
     return render(request, 'detail-edit-pamong.html')
 
+
 def tambah_pamong(request):
-    return render(request, 'tambah-pamong.html')
+    if 'access_token' not in request.session:
+        return redirect('admin-login')
+
+    if not refresh_token(request):
+        return redirect('admin-login')
+    
+    admin_data = get_admin_data(request)
+    
+    context = {
+        'admin_data': admin_data
+    }
+    if request.method == 'POST':
+        # Ambil data dari form
+        pamong_data = {
+            "jenis_kelamin": request.POST.get('jenis_kelamin'),
+            "gol_darah": request.POST.get('gol_darah'),
+            "tempat_lahir": request.POST.get('tempat_lahir'),
+            "pekerjaan": request.POST.get('pekerjaan'),
+            "nama": request.POST.get('nama'),
+            "tanggal_lahir": request.POST.get('tanggal_lahir'),
+            "alamat": request.POST.get('alamat'),
+            "jabatan": request.POST.get('jabatan'),
+            "agama": request.POST.get('agama'),
+            "nik": request.POST.get('nik'),
+            "pendidikan_terakhir": request.POST.get('pendidikan_terakhir'),
+            "nip": request.POST.get('nip'),
+            "status_kawin": request.POST.get('status_kawin'),
+            "masa_jabatan_mulai": int(request.POST.get('masa_jabatan_mulai')),
+            "masa_jabatan_selesai": int(request.POST.get('masa_jabatan_selesai'))
+        }
+
+        # Periksa apakah file foto diunggah
+        if 'foto' in request.FILES:
+            foto = request.FILES['foto']
+            files = {'file': (foto.name, foto.read(), foto.content_type)}
+        else:
+            files = None  # Jika tidak ada foto, set files ke None
+
+        # Kirim data ke API eksternal
+        api_url = 'https://technological-adriena-taufiqdp-d94bbf04.koyeb.app/pamong/'
+        data = {'pamong': json.dumps(pamong_data)}
+
+        # Jika ada file yang diunggah, sertakan dalam permintaan
+        if files:
+            response = requests.post(api_url, files=files, data=data, headers={'Accept': 'application/json'})
+        else:
+            response = requests.post(api_url, data=data, headers={'Accept': 'application/json'})
+
+        # Print respons untuk debugging
+        print("Response Status Code:", response.status_code)
+        print("Response Text:", response.text)
+        print("Response JSON:", response.json())
+
+        # Tangani respon dari API eksternal
+        if response.status_code == 201:
+            # Tambahkan pesan sukses
+            messages.success(request, 'Pamong berhasil ditambahkan!')
+            return redirect('list-pamong')
+        else:
+            # Tangani error
+            error_message = response.json().get('detail', 'Unknown error')
+            messages.error(request, error_message)
+            return render(request, 'tambah-pamong.html', context)
+
+    return render(request, 'tambah-pamong.html', context)
 
 
 # user
