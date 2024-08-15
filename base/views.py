@@ -3,7 +3,7 @@ from django.contrib import messages
 from django.http import HttpResponse
 import requests
 import json
-
+from requests.exceptions import ChunkedEncodingError, Timeout, RequestException
 
 # check
 # def index(request):
@@ -88,12 +88,24 @@ def get_admin_data(request):
         'Authorization': f'Bearer {access_token}'
     }
 
-    response = requests.get(url, headers=headers)
-
-    if response.status_code == 200:
+    try:
+        response = requests.get(url, headers=headers, timeout=10)
+        response.raise_for_status()  # Memicu error untuk status code selain 200
         admin_data = response.json()
         return admin_data
-    else:
+    except ChunkedEncodingError:
+        # Coba ulang permintaan
+        response = requests.get(url, headers=headers, timeout=10)
+        response.raise_for_status()
+        admin_data = response.json()
+        return admin_data
+    except Timeout:
+        # Tangani timeout
+        print("Request timed out")
+        return None
+    except RequestException as e:
+        # Tangani semua jenis kesalahan request lainnya
+        print(f"Request failed: {e}")
         return None
 
 # dashboard
