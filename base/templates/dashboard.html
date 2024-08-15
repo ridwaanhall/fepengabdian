@@ -18,6 +18,15 @@
                 class="fas fa-download fa-sm text-white-50"></i> Generate Report</a>
     </div>
 
+    <!-- Success Message -->
+    {% if messages %}
+        <div class="alert alert-success" role="alert">
+            {% for message in messages %}
+                {{ message }}
+            {% endfor %}
+        </div>
+    {% endif %}
+
     <!-- Content Row -->
     <div class="row">
 
