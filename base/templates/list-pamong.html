@@ -81,12 +81,12 @@
                             <td>{{ p.jabatan }}</td>
                             <td>{{ p.masa_jabatan_mulai }}-{{ p.masa_jabatan_selesai }}</td>
                             <td>
-                                <a href="{% url 'detail-edit-pamong' %}" class="btn btn-success mb-1 btn-sm">
+                                <a href="{% url 'detail-edit-pamong' p.id %}" class="btn btn-success mb-1 btn-sm">
                                     <i class="fa fa-edit"></i>
                                 </a>
-                                <!-- <a href="hapus-pamong" class="btn btn-danger mb-1 btn-sm btn-delete">
+                                <a href="{% url 'hapus-pamong' p.id %}" class="btn btn-danger mb-1 btn-sm btn-delete">
                                     <i class="fa fa-trash"></i>
-                                </a>                                 -->
+                                </a>
                             </td>
                         </tr>
                         {% endfor %}

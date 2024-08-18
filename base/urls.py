@@ -11,9 +11,10 @@ urlpatterns = [
     path('forgot-password/', views.forgot_password, name='forgot-password'),
     
     # pamong
-    path('list-pamong/', views.list_pamong, name='list-pamong'),
-    path('detail-edit-pamong/', views.detail_edit_pamong, name='detail-edit-pamong'),
     path('tambah-pamong/', views.tambah_pamong, name='tambah-pamong'),
+    path('list-pamong/', views.list_pamong, name='list-pamong'),
+    path('detail-edit-pamong/<int:pamong_id>', views.detail_edit_pamong, name='detail-edit-pamong'),
+    path('hapus-pamong/<int:pamong_id>', views.hapus_pamong, name='hapus-pamong'),
     
     # user
     path('list-user/', views.list_user, name='list-user'),
