@@ -5,7 +5,28 @@
 {% block title %}Detail Pamong{% endblock title %}
 
 {% block extra_css %}
-
+<style>
+    .img-container {
+        width: 100%;
+        max-width: 500px;
+        height: 0;
+        padding-bottom: 100%; /* This creates a 1:1 aspect ratio box */
+        position: relative;
+        overflow: hidden;
+        border-radius: 50%; /* To make it a circle */
+        margin: 0 auto; /* Center the image container */
+    }
+    
+    .img-account-profile {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 100%;
+        height: 100%;
+        object-fit: cover; /* Ensures the image covers the container, cropping as needed */
+        transform: translate(-50%, -50%);
+    }
+    </style>
 {% endblock extra_css %}
 
 {% block content %}
@@ -38,19 +59,17 @@
         <div class="row">
             {% csrf_token %}
             <div class="col-xl-4">
-                <!-- Profile picture card -->
                 <div class="card mb-4 mb-xl-0">
                     <div class="card-header">Foto Profile</div>
                     <div class="card-body text-center">
-                        <!-- Profile picture image-->
-                        {% if pamong.foto %}
-                        <img id="profilePicture" class="img-account-profile rounded-circle mb-2" src="{{ pamong.foto.url }}" alt="Profile Picture" />
-                        {% else %}
-                        <img id="profilePicture" class="img-account-profile rounded-circle mb-2" src="{% static 'img/undraw_profile.svg' %}" alt="Profile Picture" />
-                        {% endif %}
-                        <!-- Profile picture help block-->
+                        <div class="img-container">
+                            {% if pamong.gambar %}
+                                <img id="profilePicture" class="img-account-profile rounded-circle mb-2" src="{{ pamong.gambar }}" alt="Profile Picture" />
+                            {% else %}
+                                <img id="profilePicture" class="img-account-profile rounded-circle mb-2" src="{% static 'img/undraw_profile.svg' %}" alt="Profile Picture" />
+                            {% endif %}
+                        </div>
                         <div class="small font-italic text-muted mb-4">JPG atau PNG max. 5 MB</div>
-                        <!-- Profile picture upload button-->
                         <input type="file" id="foto" name="foto" class="form-control-file" onchange="loadFile(event)" />
                     </div>
                 </div>
@@ -171,13 +190,12 @@
 
 {% block extra_js %}
 <script>
-    // Script untuk menampilkan gambar yang diunggah
     function loadFile(event) {
         var image = document.getElementById('profilePicture');
         image.src = URL.createObjectURL(event.target.files[0]);
         image.onload = function() {
-            URL.revokeObjectURL(image.src) // Free memory
-        }
+            URL.revokeObjectURL(image.src); // Free memory
+        };
     }
 </script>
 {% endblock extra_js %}
