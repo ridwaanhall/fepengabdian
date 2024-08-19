@@ -64,7 +64,7 @@
                     <div class="card-body text-center">
                         <div class="img-container">
                             {% if pamong.gambar %}
-                                <img id="profilePicture" class="img-account-profile rounded-circle mb-2" src="{{ pamong.gambar }}" alt="Profile Picture" />
+                                <img id="profilePicture" class="img-account-profile rounded-circle mb-2" src="{{ pamong.gambar }}" alt="Profile Picture {{ pamong.gambar }}" />
                             {% else %}
                                 <img id="profilePicture" class="img-account-profile rounded-circle mb-2" src="{% static 'img/undraw_profile.svg' %}" alt="Profile Picture" />
                             {% endif %}
