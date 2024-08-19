@@ -231,8 +231,6 @@ def detail_edit_pamong(request, pamong_id):
     access_token = request.session.get('access_token')
     
     api_url = f'https://technological-adriena-taufiqdp-d94bbf04.koyeb.app/admin/pamong/{pamong_id}'
-    print(f"API URL: {api_url}")
-    
     headers = {
         'Accept': 'application/json',
         'Authorization': f'Bearer {access_token}'
@@ -241,9 +239,6 @@ def detail_edit_pamong(request, pamong_id):
     if request.method == 'GET':
         # Fetch the current pamong details to display
         response = requests.get(api_url, headers=headers)
-        print(f"Response Status: {response.status_code}")
-        print(f"Response Content: {response.text}")
-        
         if response.status_code == 200:
             pamong_data = response.json()
             context = {
@@ -252,7 +247,6 @@ def detail_edit_pamong(request, pamong_id):
             }
             return render(request, 'detail-edit-pamong.html', context)
         else:
-            print(f"Failed to retrieve pamong details: {response.status_code}, {response.text}")
             messages.error(request, 'Failed to retrieve pamong details.')
             return redirect('list-pamong')
 
@@ -276,27 +270,34 @@ def detail_edit_pamong(request, pamong_id):
             "masa_jabatan_selesai": int(request.POST.get('masa_jabatan_selesai'))
         }
 
-        # Convert the pamong_data to JSON
-        json_data = json.dumps(pamong_data)
-
         if 'foto' in request.FILES:
             foto = request.FILES['foto']
             files = {'file': (foto.name, foto.read(), foto.content_type)}
-            response = requests.put(api_url, files=files, data={'json_data': json_data}, headers=headers)
         else:
-            headers['Content-Type'] = 'application/json'
-            response = requests.put(api_url, data=json_data, headers=headers)
+            files = None
 
-        print(f"Update Response Status: {response.status_code}")
-        print(f"Update Response Content: {response.text}")
+        data = {'pamong': json.dumps(pamong_data)}
 
-        if response.status_code == 200:
-            messages.success(request, 'Pamong berhasil diperbarui!')
-            return redirect('list-pamong')
-        else:
-            error_message = response.json().get('detail', 'Unknown error')
-            messages.error(request, error_message)
-            return render(request, 'detail-edit-pamong.html', {'pamong': pamong_data, 'admin_data': admin_data})
+        try:
+            if files:
+                response = requests.put(api_url, files=files, data=data, headers=headers)
+            else:
+                headers['Content-Type'] = 'application/json'
+                response = requests.put(api_url, data=json.dumps(pamong_data), headers=headers)
+
+            if response.status_code == 200:
+                messages.success(request, 'Pamong berhasil diperbarui!')
+                return redirect('list-pamong')
+            else:
+                try:
+                    error_message = response.json().get('detail', 'Unknown error')
+                except ValueError:
+                    error_message = response.text  # Fallback to plain text in case of a non-JSON response
+                messages.error(request, error_message)
+        except Exception as e:
+            messages.error(request, f"An error occurred: {str(e)}")
+
+        return render(request, 'detail-edit-pamong.html', {'pamong': pamong_data, 'admin_data': admin_data})
 
 def hapus_pamong(request, pamong_id):
     if 'access_token' not in request.session:
