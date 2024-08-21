@@ -194,21 +194,18 @@ def list_pamong(request):
     
     admin_data = get_admin_data(request)
     
-    # get access token
     access_token = request.session.get('access_token')
     
     api_url = 'https://technological-adriena-taufiqdp-d94bbf04.koyeb.app/admin/pamong'
     headers = {
         'Accept': 'application/json',
-        'Authorization': f'Bearer {access_token}'  # Menyertakan token dalam header
+        'Authorization': f'Bearer {access_token}'
     }
 
-    # Mengirim permintaan GET ke API eksternal
     response = requests.get(api_url, headers=headers)
 
-    # Cek status code
     if response.status_code == 200:
-        pamong_list = response.json()  # Mengambil data JSON dari respons
+        pamong_list = response.json()
     else:
         pamong_list = []
     
@@ -227,7 +224,6 @@ def detail_edit_pamong(request, pamong_id):
     
     admin_data = get_admin_data(request)
     
-    # Get access token
     access_token = request.session.get('access_token')
     
     api_url = f'https://technological-adriena-taufiqdp-d94bbf04.koyeb.app/admin/pamong/{pamong_id}'
@@ -306,7 +302,6 @@ def hapus_pamong(request, pamong_id):
     if not refresh_token(request):
         return redirect('admin-login')
     
-    # Get access token
     access_token = request.session.get('access_token')
     
     api_url = f'https://technological-adriena-taufiqdp-d94bbf04.koyeb.app/admin/pamong/{pamong_id}'
@@ -331,19 +326,145 @@ def hapus_pamong(request, pamong_id):
     
 
 # user
+def tambah_user(request):
+    if 'access_token' not in request.session:
+        return redirect('admin-login')
+
+    if not refresh_token(request):
+        return redirect('admin-login')
+    
+    admin_data = get_admin_data(request)
+    
+    context = {
+        'admin_data': admin_data
+    }
+
+    if request.method == 'POST':
+        user_data = {
+            "nip": request.POST.get('nip'),
+            "username": request.POST.get('username'),
+            "password": request.POST.get('password'),
+            "email": request.POST.get('email')
+        }
+
+        api_url = 'https://technological-adriena-taufiqdp-d94bbf04.koyeb.app/auth/users'
+        headers = {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        }
+
+        response = requests.post(api_url, json=user_data, headers=headers)
+
+        print("Response Status Code:", response.status_code)
+        print("Response Text:", response.text)
+
+        if response.status_code == 201:
+            messages.success(request, 'User berhasil ditambahkan!')
+            return redirect('list-user')
+        else:
+            error_message = response.json().get('detail', 'Unknown error')
+            messages.error(request, error_message)
+            return render(request, 'tambah-user.html', context)
+
+    return render(request, 'tambah-user.html', context)
+
 def list_user(request):
-    return render(request, 'list-user.html')
+    if 'access_token' not in request.session:
+        return redirect('admin-login')
+
+    if not refresh_token(request):
+        return redirect('admin-login')
+    
+    admin_data = get_admin_data(request)
+    
+    access_token = request.session.get('access_token')
+    
+    api_url = 'https://technological-adriena-taufiqdp-d94bbf04.koyeb.app/admin/users'
+    headers = {
+        'Accept': 'application/json',
+        'Authorization': f'Bearer {access_token}'
+    }
+
+    response = requests.get(api_url, headers=headers)
+
+    if response.status_code == 200:
+        user_list = response.json()
+    else:
+        user_list = []
+        
+    print(user_list)
+    
+    context = {
+        'admin_data': admin_data,
+        'user_list': user_list
+    }
+    return render(request, 'list-user.html', context)
 
 def detail_edit_user(request):
     return render(request, 'detail-edit-user.html')
 
-def tambah_user(request):
-    return render(request, 'tambah-user.html')
+def hapus_user(request, user_id):
+    if 'access_token' not in request.session:
+        return redirect('admin-login')
+
+    if not refresh_token(request):
+        return redirect('admin-login')
+    
+    access_token = request.session.get('access_token')
+    
+    api_url = f'https://technological-adriena-taufiqdp-d94bbf04.koyeb.app/admin/users/{user_id}'
+    print(f"API URL: {api_url}")
+    
+    headers = {
+        'Accept': 'application/json',
+        'Authorization': f'Bearer {access_token}'
+    }
+
+    response = requests.delete(api_url, headers=headers)
+    print(f"Response Status: {response.status_code}")
+    print(f"Response Content: {response.text}")
+
+    if response.status_code == 204:
+        messages.success(request, 'User berhasil dihapus!')
+        return redirect('list-user')
+    else:
+        error_message = response.json().get('detail', 'Unknown error')
+        messages.error(request, error_message)
+        return redirect('list-user')
 
 
 # kegiatan
 def list_kegiatan(request):
-    return render(request, 'list-kegiatan.html')
+    if 'access_token' not in request.session:
+        return redirect('admin-login')
+
+    if not refresh_token(request):
+        return redirect('admin-login')
+    
+    admin_data = get_admin_data(request)
+    
+    access_token = request.session.get('access_token')
+    
+    api_url = 'https://technological-adriena-taufiqdp-d94bbf04.koyeb.app/admin/kegiatan'
+    headers = {
+        'Accept': 'application/json',
+        'Authorization': f'Bearer {access_token}'
+    }
+
+    response = requests.get(api_url, headers=headers)
+
+    if response.status_code == 200:
+        kegiatan_list = response.json()
+    else:
+        kegiatan_list = []
+        
+    print(kegiatan_list)
+    
+    context = {
+        'admin_data': admin_data,
+        'kegiatan_list': kegiatan_list
+    }
+    return render(request, 'list-kegiatan.html', context)
 
 def detail_edit_kegiatan(request):
     return render(request, 'detail-edit-kegiatan.html')
