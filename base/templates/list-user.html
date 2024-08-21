@@ -43,46 +43,33 @@
                     <thead>
                         <tr>
                             <th>ID</th>
-                            <th>NIP</th>
-                            <th>Name</th>
+                            <th>Pamong ID</th>
                             <th>Username</th>
-                            <!-- <th>Password Text</th> -->
-                            <!-- <th>Password Encrypted</th> -->
                             <th>Email</th>
                             <th>Is Admin</th>
-                            <th>Is Staff</th>
-                            <th>Is Active</th>
-                            <th>Actions</th>
+                            <th>Action</th>
                         </tr>
                     </thead>
                     <tfoot>
                         <tr>
                             <th>ID</th>
-                            <th>NIP</th>
-                            <th>Name</th>
+                            <th>Pamong ID</th>
                             <th>Username</th>
-                            <!-- <th>Password Text</th> -->
                             <th>Email</th>
                             <th>Is Admin</th>
-                            <th>Is Staff</th>
-                            <th>Is Active</th>
-                            <th>Actions</th>
+                            <th>Action</th>
                         </tr>
                     </tfoot>
                     <tbody>
-                        {% for user in users %}
+                        {% for user in user_list %}
                         <tr>
                             <td>{{ user.id }}</td>
-                            <td>{{ user.pamong.nip }}</td>
-                            <td>{{ user.pamong.nama }}</td>
+                            <td>{{ user.pamong_id }}</td>
                             <td>{{ user.username }}</td>
-                            <!-- <td>{{ user.password_text }}</td> -->
                             <td>{{ user.email }}</td>
                             <td>{{ user.is_admin }}</td>
-                            <td>{{ user.is_staff }}</td>
-                            <td>{{ user.is_active }}</td>
                             <td>
-                                <a href="{% url 'detail-edit-user' user.id %}" class="btn btn-success mb-1 btn-sm">
+                                <a href="#" class="btn btn-success mb-1 btn-sm">
                                     <i class="fa fa-edit"></i>
                                 </a>
                                 <a href="{% url 'hapus-user' user.id %}" class="btn btn-danger mb-1 btn-sm btn-delete">
