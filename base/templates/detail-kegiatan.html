@@ -1,0 +1,107 @@
+{% extends 'base/base.html' %}
+
+{% load static %}
+
+{% block title %}Detail Kegiatan{% endblock title %}
+
+{% block extra_css %}
+<style>
+    .img-container {
+        width: 100%;
+        max-width: 500px;
+        height: 0;
+        padding-bottom: 100%; /* This creates a 1:1 aspect ratio box */
+        position: relative;
+        overflow: hidden;
+        border-radius: 50%; /* To make it a circle */
+        margin: 0 auto; /* Center the image container */
+    }
+    
+    .img-account-profile {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 100%;
+        height: 100%;
+        object-fit: cover; /* Ensures the image covers the container, cropping as needed */
+        transform: translate(-50%, -50%);
+    }
+</style>
+{% endblock extra_css %}
+
+{% block content %}
+<div class="container-fluid">
+    <!-- Page Heading -->
+    <h1 class="h3 mb-4 text-gray-800 text-center">Detail Kegiatan</h1>
+
+    <div id="alert-container"></div>
+
+    {% if messages %}
+        {% for message in messages %}
+            {% if 'error' in message.tags %}
+                <div class="card bg-danger text-white shadow mb-2">
+                    <div class="card-body">
+                        {{ message }}
+                    </div>
+                </div>
+            {% elif 'success' in message.tags %}
+                <div class="card bg-success text-white shadow mb-2">
+                    <div class="card-body">
+                        {{ message }}
+                    </div>
+                </div>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+
+    <div class="row justify-content-center">
+        <div class="col-xl-4">
+            <div class="card mb-4 mb-xl-0">
+                <div class="card-header">Gambar Kegiatan</div>
+                <div class="card-body text-center">
+                    <div class="img-container">
+                        {% if kegiatan.gambar %}
+                            <img id="kegiatanImage" class="img-account-profile rounded-circle mb-2" src="{{ kegiatan.gambar }}" alt="Gambar Kegiatan {{ kegiatan.nama_kegiatan }}" />
+                        {% else %}
+                            <img id="kegiatanImage" class="img-account-profile rounded-circle mb-2" src="{% static 'img/undraw_profile.svg' %}" alt="Gambar Kegiatan" />
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-8">
+            <!-- Activity details card -->
+            <div class="card mb-4">
+                <div class="card-header">Detail Kegiatan</div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <label class="form-label">Nama Kegiatan</label>
+                        <input type="text" class="form-control" value="{{ kegiatan.nama_kegiatan }}" readonly>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Tanggal</label>
+                        <input type="date" class="form-control" value="{{ kegiatan.tanggal }}" readonly>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Deskripsi</label>
+                        <textarea class="form-control" rows="3" readonly>{{ kegiatan.deskripsi }}</textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Tempat</label>
+                        <input type="text" class="form-control" value="{{ kegiatan.tempat }}" readonly>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">User ID</label>
+                        <input type="text" class="form-control" value="{{ kegiatan.user_id }}" readonly>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">ID Kegiatan</label>
+                        <input type="text" class="form-control" value="{{ kegiatan.id }}" readonly>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
