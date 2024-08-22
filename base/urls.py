@@ -19,11 +19,11 @@ urlpatterns = [
     # user
     path('tambah-user/', views.tambah_user, name='tambah-user'),
     path('list-user/', views.list_user, name='list-user'),
-    path('detail-edit-user/', views.detail_edit_user, name='detail-edit-user'),
+    path('detail-edit-user/<int:user_id>', views.detail_edit_user, name='detail-edit-user'),
     path('hapus-user/<int:user_id>', views.hapus_user, name='hapus-user'),
     
     # kegiatan
     path('list-kegiatan/', views.list_kegiatan, name='list-kegiatan'),
-    path('detail-edit-kegiatan/', views.detail_edit_kegiatan, name='detail-edit-kegiatan'),
+    path('detail-edit-kegiatan/<int:kegiatan_id>', views.detail_edit_kegiatan, name='detail-edit-kegiatan'),
     path('tambah-kegiatan/', views.tambah_kegiatan, name='tambah-kegiatan'),
 ]

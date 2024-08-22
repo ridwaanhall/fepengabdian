@@ -4,6 +4,8 @@ from django.http import HttpResponse
 import requests
 import json
 from requests.exceptions import ChunkedEncodingError, Timeout, RequestException
+from datetime import datetime, timedelta
+import calendar, time
 
 # check
 # def index(request):
@@ -82,31 +84,35 @@ def get_admin_data(request):
         return redirect('admin-login')
 
     url = 'https://technological-adriena-taufiqdp-d94bbf04.koyeb.app/users/me'
-    
     headers = {
         'accept': 'application/json',
         'Authorization': f'Bearer {access_token}'
     }
 
-    try:
-        response = requests.get(url, headers=headers, timeout=10)
-        response.raise_for_status()  # Memicu error untuk status code selain 200
-        admin_data = response.json()
-        return admin_data
-    except ChunkedEncodingError:
-        # Coba ulang permintaan
-        response = requests.get(url, headers=headers, timeout=10)
-        response.raise_for_status()
-        admin_data = response.json()
-        return admin_data
-    except Timeout:
-        # Tangani timeout
-        print("Request timed out")
-        return None
-    except RequestException as e:
-        # Tangani semua jenis kesalahan request lainnya
-        print(f"Request failed: {e}")
-        return None
+    max_retries = 3  # Number of retries
+    retry_delay = 2  # Delay between retries in seconds
+
+    for attempt in range(max_retries):
+        try:
+            response = requests.get(url, headers=headers, timeout=10)
+            response.raise_for_status()
+            admin_data = response.json()
+            return admin_data
+        except ChunkedEncodingError:
+            print(f"ChunkedEncodingError encountered. Retrying ({attempt + 1}/{max_retries})...")
+            time.sleep(retry_delay)
+            continue
+        except Timeout:
+            print("Request timed out. Please try again later.")
+            messages.error(request, "Request timed out. Please try again later.")
+            return None
+        except RequestException as e:
+            print(f"Request failed: {e}")
+            messages.error(request, f"Request failed: {e}")
+            return None
+
+    messages.error(request, "Failed to retrieve admin data after multiple attempts.")
+    return None
 
 # dashboard
 def dashboard(request):
@@ -400,8 +406,36 @@ def list_user(request):
     }
     return render(request, 'list-user.html', context)
 
-def detail_edit_user(request):
-    return render(request, 'detail-edit-user.html')
+def detail_edit_user(request, user_id):
+    if 'access_token' not in request.session:
+        return redirect('admin-login')
+
+    if not refresh_token(request):
+        return redirect('admin-login')
+    
+    admin_data = get_admin_data(request)
+    
+    access_token = request.session.get('access_token')
+    
+    api_url = f'https://technological-adriena-taufiqdp-d94bbf04.koyeb.app/admin/users/{user_id}'
+    headers = {
+        'Accept': 'application/json',
+        'Authorization': f'Bearer {access_token}'
+    }
+
+    if request.method == 'GET':
+        # Fetch the current user details to display
+        response = requests.get(api_url, headers=headers)
+        if response.status_code == 200:
+            user_data = response.json()
+            context = {
+                'user': user_data,
+                'admin_data': admin_data
+            }
+            return render(request, 'detail-edit-user.html', context)
+        else:
+            messages.error(request, 'Failed to retrieve user details.')
+            return redirect('list-user')
 
 def hapus_user(request, user_id):
     if 'access_token' not in request.session:
@@ -444,8 +478,14 @@ def list_kegiatan(request):
     admin_data = get_admin_data(request)
     
     access_token = request.session.get('access_token')
-    
-    api_url = 'https://technological-adriena-taufiqdp-d94bbf04.koyeb.app/admin/kegiatan'
+
+    # Default to this month
+    today = datetime.today()
+    start_date = request.GET.get('start_date', today.replace(day=1).strftime('%Y-%m-%d'))
+    last_day = calendar.monthrange(today.year, today.month)[1]
+    end_date = request.GET.get('end_date', today.replace(day=last_day).strftime('%Y-%m-%d'))
+
+    api_url = f'https://technological-adriena-taufiqdp-d94bbf04.koyeb.app/admin/kegiatan?start_date={start_date}&end_date={end_date}'
     headers = {
         'Accept': 'application/json',
         'Authorization': f'Bearer {access_token}'
@@ -454,20 +494,55 @@ def list_kegiatan(request):
     response = requests.get(api_url, headers=headers)
 
     if response.status_code == 200:
-        kegiatan_list = response.json()
+        response_data = response.json()
+        if isinstance(response_data, dict) and response_data.get("detail") == "No kegiatan found":
+            kegiatan_list = []
+        else:
+            kegiatan_list = response_data
     else:
         kegiatan_list = []
-        
-    print(kegiatan_list)
+    
+    print(response.status_code)
+    print(response.text)
     
     context = {
         'admin_data': admin_data,
-        'kegiatan_list': kegiatan_list
+        'kegiatan_list': kegiatan_list,
+        'start_date': start_date,
+        'end_date': end_date,
     }
     return render(request, 'list-kegiatan.html', context)
 
-def detail_edit_kegiatan(request):
-    return render(request, 'detail-edit-kegiatan.html')
+def detail_edit_kegiatan(request, kegiatan_id):
+    if 'access_token' not in request.session:
+        return redirect('admin-login')
+
+    if not refresh_token(request):
+        return redirect('admin-login')
+    
+    admin_data = get_admin_data(request)
+    
+    access_token = request.session.get('access_token')
+    
+    api_url = f'https://technological-adriena-taufiqdp-d94bbf04.koyeb.app/admin/kegiatan/{kegiatan_id}'
+    headers = {
+        'Accept': 'application/json',
+        'Authorization': f'Bearer {access_token}'
+    }
+
+    if request.method == 'GET':
+        # Fetch the current kegiatan details to display
+        response = requests.get(api_url, headers=headers)
+        if response.status_code == 200:
+            kegiatan_data = response.json()
+            context = {
+                'kegiatan': kegiatan_data,
+                'admin_data': admin_data
+            }
+            return render(request, 'detail-kegiatan.html', context)
+        else:
+            messages.error(request, 'Failed to retrieve kegiatan details.')
+            return redirect('list-kegiatan')
 
 def tambah_kegiatan(request):
     return render(request, 'tambah-kegiatan.html')
