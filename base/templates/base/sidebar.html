@@ -36,7 +36,7 @@
         <div id="collapseDataKegiatan" class="collapse {% if request.resolver_match.url_name == 'list-kegiatan' or request.resolver_match.url_name == 'edit-kegiatan' or request.resolver_match.url_name == 'tambah-kegiatan' %} show {% endif %}" aria-labelledby="DataKegiatan" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
                 <a class="collapse-item {% if request.resolver_match.url_name == 'list-kegiatan' %} active {% endif %}" href="{% url 'list-kegiatan' %}">List Kegiatan</a>
-                <a class="collapse-item {% if request.resolver_match.url_name == 'tambah-kegiatan' %} active {% endif %}" href="{% url 'tambah-kegiatan' %}">Tambah Kegiatan</a>
+                <!-- <a class="collapse-item {% if request.resolver_match.url_name == 'tambah-kegiatan' %} active {% endif %}" href="{% url 'tambah-kegiatan' %}">Tambah Kegiatan</a> -->
             </div>
         </div>
     </li>
@@ -70,7 +70,7 @@
         <div id="collapseDataUser" class="collapse {% if request.resolver_match.url_name == 'list-user' or request.resolver_match.url_name == 'tambah-user' %} show {% endif %}" aria-labelledby="DataUser" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
                 <a class="collapse-item {% if request.resolver_match.url_name == 'list-user' %} active {% endif %}" href="{% url 'list-user' %}">List User</a>
-                <a class="collapse-item {% if request.resolver_match.url_name == 'tambah-user' %} active {% endif %}" href="{% url 'tambah-user' %}">Tambah User</a>
+                <!-- <a class="collapse-item {% if request.resolver_match.url_name == 'tambah-user' %} active {% endif %}" href="{% url 'tambah-user' %}">Tambah User</a> -->
             </div>
         </div>
     </li>
