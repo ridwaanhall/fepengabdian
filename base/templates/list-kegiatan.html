@@ -15,37 +15,97 @@
     <h1 class="h3 mb-2 text-gray-800">Data Kegiatan</h1>
     <p class="mb-4">Data Kegiatan adalah data Perangkat Desa yang terdaftar dalam Sistem Pendataan Kegiatan Desa</p>
 
+    {% if messages %}
+    {% for message in messages %}
+        {% if 'error' in message.tags %}
+            <div class="card bg-danger text-white shadow mb-2">
+                <div class="card-body">
+                    {{ message }}
+                </div>
+            </div>
+        {% elif 'success' in message.tags %}
+            <div class="card bg-success text-white shadow mb-2">
+                <div class="card-body">
+                    {{ message }}
+                </div>
+            </div>
+        {% endif %}
+    {% endfor %}
+    {% endif %}
+
     <div class="card shadow mb-4">
         <div class="card-header py-3">
             <h6 class="m-0 font-weight-bold text-primary">List Data Kegiatan</h6>
         </div>
         <div class="card-body">
+            <form method="get" class="mb-3">
+                <div class="row">
+                    <div class="col-md-4">
+                        <label for="start_date">Start Date:</label>
+                        <input type="date" name="start_date" id="start_date" class="form-control" value="{{ start_date }}">
+                    </div>
+                    <div class="col-md-4">
+                        <label for="end_date">End Date:</label>
+                        <input type="date" name="end_date" id="end_date" class="form-control" value="{{ end_date }}">
+                    </div>
+                    <div class="col-md-4 d-flex align-items-end">
+                        <button type="submit" class="btn btn-primary">Filter</button>
+                    </div>
+                </div>
+            </form>
             <div class="table-responsive">
                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                    <thead>
+                    <thead class="thead-light">
                         <tr>
-                            <th>Nama Kegiatan</th>
+                            <th>ID</th>
                             <th>Tanggal</th>
+                            <th>Gambar</th>
+                            <th>Nama Kegiatan</th>
                             <th>Tempat</th>
-                            <th>Deskripsi</th>
-                            <th>Nama Pamong</th>
+                            <th>User ID</th>
                             <th>Action</th>
                         </tr>
                     </thead>
-                    <tfoot>
+                    <tfoot class="thead-light">
                         <tr>
-                            <th>Nama Kegiatan</th>
+                            <th>ID</th>
                             <th>Tanggal</th>
+                            <th>Gambar</th>
+                            <th>Nama Kegiatan</th>
                             <th>Tempat</th>
-                            <th>Deskripsi</th>
-                            <th>Nama Pamong</th>
+                            <th>User ID</th>
                             <th>Action</th>
                         </tr>
                     </tfoot>
                     <tbody>
-                        
+                        {% for kegiatan in kegiatan_list %}
+                        <tr>
+                            <td>{{ kegiatan.id }}</td>
+                            <td>{{ kegiatan.tanggal }}</td>
+                            <td class="text-center">
+                                {% if kegiatan.gambar %}
+                                    <img src="https://technological-adriena-taufiqdp-d94bbf04.koyeb.app/admin/pamong/{{ kegiatan.id }}/image"
+                                         class="rounded-circle img-thumbnail" alt="Gambar Kegiatan {{ kegiatan.nama_kegiatan }}" width="70px" 
+                                         title="Gambar Kegiatan: {{ kegiatan.nama_kegiatan }}">
+                                {% else %}
+                                    <img src="{% static 'img/undraw_profile.svg' %}"
+                                         class="rounded-circle img-thumbnail" alt="Gambar Kegiatan {{ kegiatan.nama_kegiatan }}" width="70px"
+                                         title="Gambar Default">
+                                {% endif %}
+                            </td>
+                            <td>{{ kegiatan.nama_kegiatan }}</td>
+                            <td>{{ kegiatan.tempat }}</td>
+                            <td>{{ kegiatan.user_id }}</td>
+                            <td>
+                                <a href="{% url 'detail-edit-kegiatan' kegiatan.id %}" class="btn btn-success mb-1 btn-sm" title="Edit Kegiatan">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                            </td>
+                        </tr>
+                        {% endfor %}
                     </tbody>
                 </table>
+                
             </div>
         </div>
     </div>
