@@ -2,9 +2,9 @@ name: Test CI
 
 on:
   push:
-    branches: [ "master" ]
+    branches: [ "contrib" ]
   pull_request:
-    branches: [ "master" ]
+    branches: [ "contrib" ]
 
 jobs:
   build:
@@ -20,7 +20,7 @@ jobs:
 
     - name: create .env
       working-directory: ./backend
-      run: echo "SECRET_KEY=${{ secrets.SECRET_KEY }}" > .env
+      run: echo "SECRET_KEY=somerandom123456789" > .env
 
     - name: test
       working-directory: ./backend
