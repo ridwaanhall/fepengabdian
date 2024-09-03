@@ -126,11 +126,10 @@ def dashboard(request):
     
     access_token = request.session.get('access_token')
     
-    # Default to this month
-    today = datetime.today()
-    start_date = request.GET.get('start_date', today.replace(day=1).strftime('%Y-%m-%d'))
-    last_day = calendar.monthrange(today.year, today.month)[1]
-    end_date = request.GET.get('end_date', today.replace(day=last_day).strftime('%Y-%m-%d'))
+    # Set start_date and end_date to today
+    today = datetime.today().strftime('%Y-%m-%d')
+    start_date = today
+    end_date = today
 
     api_url = f'https://technological-adriena-taufiqdp-d94bbf04.koyeb.app/admin/kegiatan?start_date={start_date}&end_date={end_date}'
     headers = {
@@ -149,6 +148,7 @@ def dashboard(request):
     else:
         kegiatan_list = []
     
+    print(api_url)
     print(response.status_code)
     print(response.text)
     
