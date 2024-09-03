@@ -1,0 +1,432 @@
+[
+  {
+    "nip": "198703212011011005",
+    "username": "dlee1987",
+    "password": "DavidLee@1987",
+    "email": "dlee1987@example.com",
+    "kegiatan": [
+      {
+        "nama_kegiatan": "Rapat Koordinasi",
+        "tanggal": "2023-03-08T10:00:00.000Z",
+        "tempat": "Ruang Rapat Utama",
+        "deskripsi": "Pembahasan program kerja tahunan",
+        "gambar": "rapat-koordinasi.jpg"
+      },
+      {
+        "nama_kegiatan": "Pelatihan Kepemimpinan",
+        "tanggal": "2023-03-15T09:00:00.000Z",
+        "tempat": "Gedung Diklat",
+        "deskripsi": "Meningkatkan kemampuan kepemimpinan",
+        "gambar": "pelatihan-kepemimpinan.jpg"
+      },
+      {
+        "nama_kegiatan": "Sosialisasi Program Baru",
+        "tanggal": "2023-03-22T14:00:00.000Z",
+        "tempat": "Aula Kantor",
+        "deskripsi": "Mengenalkan program baru kepada seluruh staf",
+        "gambar": "sosialisasi-program-baru.jpg"
+      },
+      {
+        "nama_kegiatan": "Kunker ke Luar Kota",
+        "tanggal": "2023-03-29T08:00:00.000Z",
+        "tempat": "Kota X",
+        "deskripsi": "Studi banding ke instansi terkait",
+        "gambar": "kunker-luar-kota.jpg"
+      },
+      {
+        "nama_kegiatan": "Evaluasi Kinerja",
+        "tanggal": "2023-04-05T15:00:00.000Z",
+        "tempat": "Ruang Rapat",
+        "deskripsi": "Penilaian kinerja seluruh staf",
+        "gambar": "evaluasi-kinerja.jpg"
+      }
+    ]
+  },
+  {
+    "nip": "199209252015032001",
+    "username": "snurhaliza1992",
+    "password": "SitiNurhaliza@1992",
+    "email": "snurhaliza1992@example.com",
+    "kegiatan": [
+      {
+        "nama_kegiatan": "Input Data",
+        "tanggal": "2023-03-08T10:00:00.000Z",
+        "tempat": "Kantor",
+        "deskripsi": "Memasukkan data ke sistem",
+        "gambar": "input-data.jpg"
+      },
+      {
+        "nama_kegiatan": "Menyiapkan Dokumen",
+        "tanggal": "2023-03-15T09:00:00.000Z",
+        "tempat": "Kantor",
+        "deskripsi": "Melakukan pengecekan dan penyuntingan dokumen",
+        "gambar": "menetapkan-dokumen.jpg"
+      },
+      {
+        "nama_kegiatan": "Rapat Internal",
+        "tanggal": "2023-03-22T14:00:00.000Z",
+        "tempat": "Ruang Rapat",
+        "deskripsi": "Diskusi internal terkait tugas administrasi",
+        "gambar": "rapat-internal.jpg"
+      },
+      {
+        "nama_kegiatan": "Menjawab Surat",
+        "tanggal": "2023-03-29T08:00:00.000Z",
+        "tempat": "Kantor",
+        "deskripsi": "Membuat balasan surat masuk",
+        "gambar": "menjawab-surat.jpg"
+      },
+      {
+        "nama_kegiatan": "Melayani Pengunjung",
+        "tanggal": "2023-04-05T15:00:00.000Z",
+        "tempat": "Kantor",
+        "deskripsi": "Memberikan informasi dan pelayanan kepada pengunjung",
+        "gambar": "melayani-pengunjung.jpg"
+      }
+    ]
+  },
+  {
+    "nip": "198502282010011003",
+    "username": "bsantoso1985",
+    "password": "BudiSantoso@1985",
+    "email": "bsantoso1985@example.com",
+    "kegiatan": [
+      {
+        "nama_kegiatan": "Rapat Tim",
+        "tanggal": "2023-03-08T10:00:00.000Z",
+        "tempat": "Ruang Rapat Seksi",
+        "deskripsi": "Membahas rencana kerja seksi",
+        "gambar": "rapat-tim.jpg"
+      },
+      {
+        "nama_kegiatan": "Pembinaan Staf",
+        "tanggal": "2023-03-15T09:00:00.000Z",
+        "tempat": "Ruang Kerja",
+        "deskripsi": "Memberikan arahan dan bimbingan kepada staf",
+        "gambar": "pembinaan-staf.jpg"
+      },
+      {
+        "nama_kegiatan": "Evaluasi Program",
+        "tanggal": "2023-03-22T14:00:00.000Z",
+        "tempat": "Ruang Rapat",
+        "deskripsi": "Mengevaluasi pelaksanaan program seksi",
+        "gambar": "evaluasi-program.jpg"
+      },
+      {
+        "nama_kegiatan": "Sosialisasi Kebijakan",
+        "tanggal": "2023-03-29T08:00:00.000Z",
+        "tempat": "Aula Kantor",
+        "deskripsi": "Mengenalkan kebijakan baru kepada masyarakat",
+        "gambar": "sosialisasi-kebijakan.jpg"
+      },
+      {
+        "nama_kegiatan": "Pengawasan Lapangan",
+        "tanggal": "2023-04-05T15:00:00.000Z",
+        "tempat": "Lokasi Proyek",
+        "deskripsi": "Memeriksa pelaksanaan proyek di lapangan",
+        "gambar": "pengawasan-lapangan.jpg"
+      }
+    ]
+  },
+  {
+    "nip": "199004052013022002",
+    "username": "mchristina1990",
+    "password": "MariaChristina@1990",
+    "email": "mchristina1990@example.com",
+    "kegiatan": [
+      {
+        "nama_kegiatan": "Riset Kebijakan",
+        "tanggal": "2023-03-08T10:00:00.000Z",
+        "tempat": "Kantor",
+        "deskripsi": "Melakukan pengumpulan data dan analisis kebijakan",
+        "gambar": "riset-kebijakan.jpg"
+      },
+      {
+        "nama_kegiatan": "Rapat Koordinasi",
+        "tanggal": "2023-03-15T09:00:00.000Z",
+        "tempat": "Ruang Rapat",
+        "deskripsi": "Diskusi dengan stakeholder terkait kebijakan",
+        "gambar": "rapat-koordinasi.jpg"
+      },
+      {
+        "nama_kegiatan": "Penyusunan Draf Kebijakan",
+        "tanggal": "2023-03-22T14:00:00.000Z",
+        "tempat": "Kantor",
+        "deskripsi": "Membuat draf kebijakan baru",
+        "gambar": "penyusunan-draf-kebijakan.jpg"
+      },
+      {
+        "nama_kegiatan": "Sosialisasi Kebijakan",
+        "tanggal": "2023-03-29T08:00:00.000Z",
+        "tempat": "Aula Kantor",
+        "deskripsi": "Mengenalkan kebijakan baru kepada publik",
+        "gambar": "sosialisasi-kebijakan.jpg"
+      },
+      {
+        "nama_kegiatan": "Evaluasi Kebijakan",
+        "tanggal": "2023-04-05T15:00:00.000Z",
+        "tempat": "Ruang Rapat",
+        "deskripsi": "Menilai efektivitas pelaksanaan kebijakan",
+        "gambar": "evaluasi-kebijakan.jpg"
+      }
+    ]
+  },
+  {
+    "nip": "198806152012011004",
+    "username": "afauzi1988",
+    "password": "AhmadFauzi@1988",
+    "email": "afauzi1988@example.com",
+    "kegiatan": [
+      {
+        "nama_kegiatan": "Audit Internal",
+        "tanggal": "2023-03-08T10:00:00.000Z",
+        "tempat": "Kantor",
+        "deskripsi": "Melakukan audit terhadap keuangan internal",
+        "gambar": "audit-internal.jpg"
+      },
+      {
+        "nama_kegiatan": "Pelatihan Audit",
+        "tanggal": "2023-03-15T09:00:00.000Z",
+        "tempat": "Gedung Diklat",
+        "deskripsi": "Meningkatkan kemampuan audit",
+        "gambar": "pelatihan-audit.jpg"
+      },
+      {
+        "nama_kegiatan": "Audit Lapangan",
+        "tanggal": "2023-03-22T14:00:00.000Z",
+        "tempat": "Lokasi Audit",
+        "deskripsi": "Melakukan pemeriksaan lapangan",
+        "gambar": "audit-lapangan.jpg"
+      },
+      {
+        "nama_kegiatan": "Penyusunan Laporan Audit",
+        "tanggal": "2023-03-29T08:00:00.000Z",
+        "tempat": "Kantor",
+        "deskripsi": "Membuat laporan hasil audit",
+        "gambar": "penyusunan-laporan-audit.jpg"
+      },
+      {
+        "nama_kegiatan": "Presentasi Hasil Audit",
+        "tanggal": "2023-04-05T15:00:00.000Z",
+        "tempat": "Ruang Rapat",
+        "deskripsi": "Mempresentasikan hasil audit kepada pihak terkait",
+        "gambar": "presentasi-hasil-audit.jpg"
+      }
+    ]
+  },
+  {
+    "nip": "199108172014032003",
+    "username": "dlestari1991",
+    "password": "DewiLestari@1991",
+    "email": "dlestari1991@example.com",
+    "kegiatan": [
+      {
+        "nama_kegiatan": "Pemeliharaan Server",
+        "tanggal": "2023-03-08T10:00:00.000Z",
+        "tempat": "Ruang Server",
+        "deskripsi": "Melakukan pengecekan dan perawatan server",
+        "gambar": "pemeliharaan-server.jpg"
+      },
+      {
+        "nama_kegiatan": "Instalasi Perangkat Lunak",
+        "tanggal": "2023-03-15T09:00:00.000Z",
+        "tempat": "Kantor",
+        "deskripsi": "Memasang perangkat lunak baru",
+        "gambar": "instalasi-perangkat-lunak.jpg"
+      },
+      {
+        "nama_kegiatan": "Troubleshooting Jaringan",
+        "tanggal": "2023-03-22T14:00:00.000Z",
+        "tempat": "Kantor",
+        "deskripsi": "Memecahkan masalah jaringan komputer",
+        "gambar": "troubleshooting-jaringan.jpg"
+      },
+      {
+        "nama_kegiatan": "Pelatihan Penggunaan Aplikasi",
+        "tanggal": "2023-03-29T08:00:00.000Z",
+        "tempat": "Aula Kantor",
+        "deskripsi": "Melatih pengguna dalam menggunakan aplikasi baru",
+        "gambar": "pelatihan-penggunaan-aplikasi.jpg"
+      },
+      {
+        "nama_kegiatan": "Backup Data",
+        "tanggal": "2023-04-05T15:00:00.000Z",
+        "tempat": "Ruang Server",
+        "deskripsi": "Membuat cadangan data penting",
+        "gambar": "backup-data.jpg"
+      }
+    ]
+  },
+  {
+    "nip": "198607102009011002",
+    "username": "rwijaya1986",
+    "password": "RadenWijaya@1986",
+    "email": "rwijaya1986@example.com",
+    "kegiatan": [
+      {
+        "nama_kegiatan": "Klasifikasi Arsip",
+        "tanggal": "2023-03-08T10:00:00.000Z",
+        "tempat": "Ruang Arsip",
+        "deskripsi": "Memilah dan mengklasifikasikan arsip",
+        "gambar": "klasifikasi-arsip.jpg"
+      },
+      {
+        "nama_kegiatan": "Inventarisasi Arsip",
+        "tanggal": "2023-03-15T09:00:00.000Z",
+        "tempat": "Ruang Arsip",
+        "deskripsi": "Mencatat dan mendata arsip",
+        "gambar": "inventarisasi-arsip.jpg"
+      },
+      {
+        "nama_kegiatan": "Penataan Arsip",
+        "tanggal": "2023-03-22T14:00:00.000Z",
+        "tempat": "Ruang Arsip",
+        "deskripsi": "Menata arsip secara sistematis",
+        "gambar": "penataan-arsip.jpg"
+      },
+      {
+        "nama_kegiatan": "Pelayanan Arsip",
+        "tanggal": "2023-03-29T08:00:00.000Z",
+        "tempat": "Ruang Arsip",
+        "deskripsi": "Memberikan pelayanan pengambilan dan pengembalian arsip",
+        "gambar": "pelayanan-arsip.jpg"
+      },
+      {
+        "nama_kegiatan": "Sosialisasi Kearsipan",
+        "tanggal": "2023-04-05T15:00:00.000Z",
+        "tempat": "Aula Kantor",
+        "deskripsi": "Mengenalkan pentingnya kearsipan kepada staf",
+        "gambar": "sosialisasi-kearsipan.jpg"
+      }
+    ]
+  },
+  {
+    "nip": "199302092016042001",
+    "username": "lsusanti1993",
+    "password": "LindaSusanti@1993",
+    "email": "lsusanti1993@example.com",
+    "kegiatan": [
+      {
+        "nama_kegiatan": "Penerimaan Kas",
+        "tanggal": "2023-03-08T10:00:00.000Z",
+        "tempat": "Kantor",
+        "deskripsi": "Menerima uang kas masuk",
+        "gambar": "penerimaan-kas.jpg"
+      },
+      {
+        "nama_kegiatan": "Pembuatan Bukti Penerimaan",
+        "tanggal": "2023-03-15T09:00:00.000Z",
+        "tempat": "Kantor",
+        "deskripsi": "Membuat bukti penerimaan uang kas",
+        "gambar": "pembuatan-bukti-penerimaan.jpg"
+      },
+      {
+        "nama_kegiatan": "Pembayaran Kas",
+        "tanggal": "2023-03-22T14:00:00.000Z",
+        "tempat": "Kantor",
+        "deskripsi": "Melakukan pembayaran uang kas keluar",
+        "gambar": "pembayaran-kas.jpg"
+      },
+      {
+        "nama_kegiatan": "Rekonsiliasi Bank",
+        "tanggal": "2023-03-29T08:00:00.000Z",
+        "tempat": "Kantor",
+        "deskripsi": "Memeriksa dan mencocokkan saldo bank",
+        "gambar": "rekonsiliasi-bank.jpg"
+      },
+      {
+        "nama_kegiatan": "Laporan Keuangan",
+        "tanggal": "2023-04-05T15:00:00.000Z",
+        "tempat": "Kantor",
+        "deskripsi": "Membuat laporan keuangan bulanan",
+        "gambar": "laporan-keuangan.jpg"
+      }
+    ]
+  },
+  {
+    "nip": "198410242007011001",
+    "username": "asetiawan1984",
+    "password": "AgusSetiawan@1984",
+    "email": "asetiawan1984@example.com",
+    "kegiatan": [
+      {
+        "nama_kegiatan": "Riset Lapangan",
+        "tanggal": "2023-03-08T10:00:00.000Z",
+        "tempat": "Lokasi Riset",
+        "deskripsi": "Melakukan pengumpulan data di lapangan",
+        "gambar": "riset-lapangan.jpg"
+      },
+      {
+        "nama_kegiatan": "Analisis Data",
+        "tanggal": "2023-03-15T09:00:00.000Z",
+        "tempat": "Laboratorium",
+        "deskripsi": "Menganalisis data hasil riset",
+        "gambar": "analisis-data.jpg"
+      },
+      {
+        "nama_kegiatan": "Seminar Ilmiah",
+        "tanggal": "2023-03-22T14:00:00.000Z",
+        "tempat": "Aula Kantor",
+        "deskripsi": "Mempresentasikan hasil riset di seminar",
+        "gambar": "seminar-ilmiah.jpg"
+      },
+      {
+        "nama_kegiatan": "Publikasi Jurnal",
+        "tanggal": "2023-03-29T08:00:00.000Z",
+        "tempat": "Kantor",
+        "deskripsi": "Menerbitkan hasil riset di jurnal ilmiah",
+        "gambar": "publikasi-jurnal.jpg"
+      },
+      {
+        "nama_kegiatan": "Pelatihan Riset",
+        "tanggal": "2023-04-05T15:00:00.000Z",
+        "tempat": "Gedung Diklat",
+        "deskripsi": "Melatih peneliti muda dalam melakukan riset",
+        "gambar": "pelatihan-riset.jpg"
+      }
+    ]
+  },
+  {
+    "nip": "199503112018012001",
+    "username": "pindah1995",
+    "password": "PutriIndah@1995",
+    "email": "pindah1995@example.com",
+    "kegiatan": [
+      {
+        "nama_kegiatan": "Sosialisasi Teknik Budidaya",
+        "tanggal": "2023-03-08T10:00:00.000Z",
+        "tempat": "Desa X",
+        "deskripsi": "Mengenalkan teknik budidaya tanaman baru kepada petani",
+        "gambar": "sosialisasi-teknik-budidaya.jpg"
+      },
+      {
+        "nama_kegiatan": "Penyuluhan Hama dan Penyakit",
+        "tanggal": "2023-03-15T09:00:00.000Z",
+        "tempat": "Desa Y",
+        "deskripsi": "Memberikan informasi tentang pengendalian hama dan penyakit tanaman",
+        "gambar": "penyuluhan-hama-penyakit.jpg"
+      },
+      {
+        "nama_kegiatan": "Demo Lapangan",
+        "tanggal": "2023-03-22T14:00:00.000Z",
+        "tempat": "Kebun Percontohan",
+        "deskripsi": "Menunjukkan praktik budidaya tanaman yang baik",
+        "gambar": "demo-lapangan.jpg"
+      },
+      {
+        "nama_kegiatan": "Kunjungan ke Petani",
+        "tanggal": "2023-03-29T08:00:00.000Z",
+        "tempat": "Desa Z",
+        "deskripsi": "Memberikan pendampingan dan konsultasi kepada petani",
+        "gambar": "kunjungan-ke-petani.jpg"
+      },
+      {
+        "nama_kegiatan": "Pameran Pertanian",
+        "tanggal": "2023-04-05T15:00:00.000Z",
+        "tempat": "Gedung Pameran",
+        "deskripsi": "Menampilkan hasil produk pertanian dan teknologi baru",
+        "gambar": "pameran-pertanian.jpg"
+      }
+    ]
+  }
+]

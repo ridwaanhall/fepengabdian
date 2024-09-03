@@ -1,0 +1,27 @@
+name: Test CI
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: install
+      working-directory: ./backend
+      run: make install
+
+    - name: create .env
+      working-directory: ./backend
+      run: echo "SECRET_KEY=${{ secrets.SECRET_KEY }}" > .env
+
+    - name: test
+      working-directory: ./backend
+      run: make testing
