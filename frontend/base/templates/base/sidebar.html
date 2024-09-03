@@ -75,6 +75,19 @@
         </div>
     </li>
 
+    <li class="nav-item {% if request.resolver_match.url_name == 'list-agenda' or request.resolver_match.url_name == 'tambah-agenda' %} active {% endif %}">
+        <a class="nav-link {% if request.resolver_match.url_name != 'list-agenda' and request.resolver_match.url_name != 'tambah-agenda' %} collapsed {% endif %}" href="#" data-toggle="collapse" data-target="#collapseDataAgenda"
+            aria-expanded="true" aria-controls="collapseDataAgenda">
+            <i class="fas fa-fw fa-calendar"></i>
+            <span>Agenda</span>
+        </a>
+        <div id="collapseDataAgenda" class="collapse aria-labelledby="DataAgenda" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <a class="collapse-item" href="/">Kalender</a>
+            </div>
+        </div>
+    </li>
+
     <!-- <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages"
             aria-expanded="true" aria-controls="collapsePages">

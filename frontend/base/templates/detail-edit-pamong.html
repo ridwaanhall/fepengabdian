@@ -84,17 +84,17 @@
                         <div class="row gx-3 mb-3">
                             <div class="col-md-6">
                                 <label class="small mb-1" for="inputNama">Nama</label>
-                                <input class="form-control" id="inputNama" type="text" name="nama" value="{{ pamong.nama }}" required />
+                                <input class="form-control" id="inputNama" type="text" name="nama" value="{{ pamong.nama }}" maxlength="255" required /> 
                             </div>
                             <div class="col-md-6">
                                 <label class="small mb-1" for="inputNIK">NIK</label>
-                                <input class="form-control" id="inputNIK" type="text" name="nik" value="{{ pamong.nik }}" required />
+                                <input class="form-control" id="inputNIK" type="text" name="nik" value="{{ pamong.nik }}" maxlength="16" required /> 
                             </div>
                         </div>
                         <div class="row gx-3 mb-3">
                             <div class="col-md-6">
                                 <label class="small mb-1" for="inputTempatLahir">Tempat Lahir</label>
-                                <input class="form-control" id="inputTempatLahir" type="text" name="tempat_lahir" value="{{ pamong.tempat_lahir }}" required />
+                                <input class="form-control" id="inputTempatLahir" type="text" name="tempat_lahir" value="{{ pamong.tempat_lahir }}" maxlength="255" required /> 
                             </div>
                             <div class="col-md-6">
                                 <label class="small mb-1" for="inputTanggalLahir">Tanggal Lahir</label>
@@ -104,7 +104,7 @@
                         <div class="row gx-3 mb-3">
                             <div class="col-md-12">
                                 <label class="small mb-1" for="inputAlamat">Alamat</label>
-                                <input class="form-control" id="inputAlamat" type="text" name="alamat" value="{{ pamong.alamat }}" required />
+                                <input class="form-control" id="inputAlamat" type="text" name="alamat" value="{{ pamong.alamat }}" maxlength="255" required /> 
                             </div>
                         </div>
                         <div class="row gx-3 mb-3">
@@ -119,7 +119,7 @@
                             </div>                            
                             <div class="col-md-6">
                                 <label class="small mb-1" for="inputPekerjaan">Pekerjaan</label>
-                                <input class="form-control" id="inputPekerjaan" type="text" name="pekerjaan" value="{{ pamong.pekerjaan }}" required />
+                                <input class="form-control" id="inputPekerjaan" type="text" name="pekerjaan" value="{{ pamong.pekerjaan }}" maxlength="255" required /> 
                             </div>
                         </div>
                         <div class="row gx-3 mb-3">
@@ -157,26 +157,26 @@
                         <div class="row gx-3 mb-3">
                             <div class="col-md-6">
                                 <label class="small mb-1" for="inputNIP">NIP</label>
-                                <input class="form-control" id="inputNIP" type="text" name="nip" value="{{ pamong.nip }}" required />
+                                <input class="form-control" id="inputNIP" type="text" name="nip" value="{{ pamong.nip }}" maxlength="18" required /> 
                             </div>
                             <div class="col-md-6">
                                 <label class="small mb-1" for="inputJabatan">Jabatan</label>
-                                <input class="form-control" id="inputJabatan" type="text" name="jabatan" value="{{ pamong.jabatan }}" required />
+                                <input class="form-control" id="inputJabatan" type="text" name="jabatan" value="{{ pamong.jabatan }}" maxlength="255" required /> 
                             </div>
                         </div>
                         <div class="row gx-3 mb-3">
                             <div class="col-md-6">
                                 <label class="small mb-1" for="inputMasaJabatanMulai">Masa Jabatan Mulai</label>
-                                <input class="form-control" id="inputMasaJabatanMulai" type="number" name="masa_jabatan_mulai" value="{{ pamong.masa_jabatan_mulai }}" required />
+                                <input class="form-control" id="inputMasaJabatanMulai" type="number" name="masa_jabatan_mulai" value="{{ pamong.masa_jabatan_mulai }}" min="1900" max="9999" required /> 
                             </div>
                             <div class="col-md-6">
                                 <label class="small mb-1" for="inputMasaJabatanSelesai">Masa Jabatan Selesai</label>
-                                <input class="form-control" id="inputMasaJabatanSelesai" type="number" name="masa_jabatan_selesai" value="{{ pamong.masa_jabatan_selesai }}" required />
+                                <input class="form-control" id="inputMasaJabatanSelesai" type="number" name="masa_jabatan_selesai" value="{{ pamong.masa_jabatan_selesai }}" min="1900" max="9999" required /> 
                             </div>
                         </div>
                         <div class="mb-3">
                             <label class="small mb-1" for="inputPendidikanTerakhir">Pendidikan Terakhir</label>
-                            <input class="form-control" id="inputPendidikanTerakhir" type="text" name="pendidikan_terakhir" value="{{ pamong.pendidikan_terakhir }}" required />
+                            <input class="form-control" id="inputPendidikanTerakhir" type="text" name="pendidikan_terakhir" value="{{ pamong.pendidikan_terakhir }}" maxlength="255" required /> 
                         </div>
                         <button class="btn btn-primary" type="submit" id="submitPamong">Simpan Perubahan</button>
                     </div>
