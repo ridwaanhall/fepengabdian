@@ -43,7 +43,7 @@
                     <thead>
                         <tr>
                             <th>ID</th>
-                            <th>Pamong ID</th>
+                            <th>Nama</th>
                             <th>Username</th>
                             <th>Email</th>
                             <th>Is Admin</th>
@@ -53,7 +53,7 @@
                     <tfoot>
                         <tr>
                             <th>ID</th>
-                            <th>Pamong ID</th>
+                            <th>Nama</th>
                             <th>Username</th>
                             <th>Email</th>
                             <th>Is Admin</th>
@@ -64,7 +64,7 @@
                         {% for user in user_list %}
                         <tr>
                             <td>{{ user.id }}</td>
-                            <td>{{ user.pamong_id }}</td>
+                            <td><a href="{% url 'detail-edit-user' user.id %}">{{ user.nama }}</a></td>
                             <td>{{ user.username }}</td>
                             <td>{{ user.email }}</td>
                             <td>{{ user.is_admin }}</td>

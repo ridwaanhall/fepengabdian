@@ -48,20 +48,10 @@
                         <label for="email" class="form-label">Email</label>
                         <input type="email" class="form-control" id="email" name="email" value="{{ user.email }}" readonly>
                     </div>
-                    <div class="mb-3">
-                        <label for="password" class="form-label">Password</label>
-                        <input type="text" class="form-control" id="password" name="password" value="{{ user.password }}" readonly>
-                    </div>
-                    <div class="mb-3">
-                        <label for="is_admin" class="form-label">Is Admin</label>
-                        <div class="form-check">
-                            <input type="checkbox" class="form-check-input" id="is_admin" name="is_admin" {% if user.is_admin %}checked{% endif %} disabled>
-                        </div>
-                    </div>
-                    <div class="mb-3">
+                    <!-- <div class="mb-3">
                         <label for="pamong_id" class="form-label">Pamong ID</label>
                         <input type="text" class="form-control" id="pamong_id" name="pamong_id" value="{{ user.pamong_id }}" readonly>
-                    </div>
+                    </div> -->
                 </div>
             </div>
         </div>

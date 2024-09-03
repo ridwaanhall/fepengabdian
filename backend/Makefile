@@ -8,6 +8,6 @@ testing:
 	python -m pytest
 
 run:
-	uvicorn main:app
+	uvicorn main:app --port 8080
 
 all: install format testing run 

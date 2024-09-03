@@ -157,10 +157,13 @@ async def login_for_access_token_web(
         )
 
     access_token = create_access_token(
-        user.username, user.id, user.is_admin, timedelta(minutes=10)
+        user.username, user.id, user.is_admin, timedelta(days=7)
     )
 
-    return {"access_token": access_token, "token_type": "bearer"}
+    return {
+        "access_token": access_token,
+        "token_type": "bearer",
+    }
 
 
 @router.post("/token", response_model=Token)
@@ -184,7 +187,7 @@ async def login_for_access_token_mobile(
         )
 
     access_token = create_access_token(
-        user.username, user.id, user.is_admin, timedelta(minutes=10)
+        user.username, user.id, user.is_admin, timedelta(days=7)
     )
 
     refresh_token = create_access_token(

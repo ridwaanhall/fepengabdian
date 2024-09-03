@@ -145,14 +145,52 @@ async def get_pamong_image(pamong_id: int, db: db_dependency):
 async def get_kegiatan(
     db: db_dependency, admin: admin_dependency, start_date: date, end_date: date
 ):
-    kegiatan = (
+    kegiatan_all = (
         db.query(Kegiatan)
         .filter(Kegiatan.tanggal >= start_date)
         .filter(Kegiatan.tanggal <= end_date)
         .all()
     )
 
-    if len(kegiatan) == 0 or not kegiatan:
+    if not kegiatan_all:
         return {"detail": "No kegiatan found"}
+
+    kegiatan_dict = [
+        {
+            "id": kegiatan.id,
+            "nama_kegiatan": kegiatan.nama_kegiatan,
+            "tanggal": kegiatan.tanggal,
+            "tempat": kegiatan.tempat,
+            "deskripsi": kegiatan.deskripsi,
+            "gambar": kegiatan.gambar,
+            "user_id": kegiatan.user_id,
+            "nama_pamong": kegiatan.user.pamong.nama,
+            "pamong_id": kegiatan.user.pamong.id
+        }
+        for kegiatan in kegiatan_all
+    ]
+
+    return kegiatan_dict
+
+
+@router.get("/kegiatan/{kegiatan_id}")
+async def get_kegiatan_by_id(kegiatan_id: int, db: db_dependency, admin: admin_dependency):
+    kegiatan = db.query(Kegiatan).filter(Kegiatan.id == kegiatan_id).first()
+
+    if not kegiatan:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail="Kegiatan not found"
+        )
+
+    kegiatan = {
+        "id": kegiatan.id,
+        "nama_kegiatan": kegiatan.nama_kegiatan,
+        "tanggal": kegiatan.tanggal,
+        "tempat": kegiatan.tempat,
+        "deskripsi": kegiatan.deskripsi,
+        "gambar": kegiatan.gambar,
+        "user_id": kegiatan.user_id,
+        "nama_pamong": kegiatan.user.pamong.nama
+    }
 
     return kegiatan

@@ -7,9 +7,9 @@ class Pamong(Base):
     __tablename__ = "pamong"
 
     id = Column(Integer, primary_key=True, index=True)
-    nama = Column(String(100), nullable=False)  #
+    nama = Column(String(100), nullable=False)
     nik = Column(String(16), unique=True, nullable=False)
-    nip = Column(String(18), unique=True, nullable=True)  #
+    nip = Column(String(18), unique=True, nullable=True)
     tempat_lahir = Column(String(50), nullable=True)
     tanggal_lahir = Column(Date, nullable=True)
     alamat = Column(String, nullable=True)
@@ -17,7 +17,7 @@ class Pamong(Base):
         Enum("Belum Kawin", "Kawin", "Cerai Hidup", "Cerai Mati"), nullable=True
     )
     pekerjaan = Column(String(50), nullable=True)
-    jabatan = Column(String(50), nullable=True)  #
+    jabatan = Column(String(50), nullable=True)
     gol_darah = Column(Enum("A", "B", "AB", "O"), nullable=True)
     agama = Column(
         Enum("Islam", "Kristen", "Katolik", "Hindu", "Budha", "Konghucu"), nullable=True
@@ -28,7 +28,7 @@ class Pamong(Base):
     pendidikan_terakhir = Column(String(50), nullable=True)
     gambar = Column(String, nullable=True)
 
-    user = relationship("User", back_populates="pamong")
+    user = relationship("User", back_populates="pamong", cascade="all, delete-orphan")
 
 
 class User(Base):
@@ -44,7 +44,9 @@ class User(Base):
 
     pamong = relationship("Pamong", back_populates="user")
 
-    kegiatan = relationship("Kegiatan", back_populates="user")
+    kegiatan = relationship(
+        "Kegiatan", back_populates="user", cascade="all, delete-orphan"
+    )
 
 
 class Kegiatan(Base):

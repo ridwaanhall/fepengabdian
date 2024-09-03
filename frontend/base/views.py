@@ -1,25 +1,27 @@
+import requests
+import json
+import calendar, time
+import os
+
+from dotenv import load_dotenv
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.http import HttpResponse
-import requests
-import json
 from requests.exceptions import ChunkedEncodingError, Timeout, RequestException
 from datetime import datetime, timedelta
-import calendar, time
-
-# check
-# def index(request):
-#     return HttpResponse("About page")
 
 
-# auth
+load_dotenv(override=True)
+API_BASE_URL = os.getenv("API_BASE_URL")
+
+
 def login(request):
     if request.method == "POST":
         username = request.POST.get('username')
         password = request.POST.get('password')
 
         # Prepare the API request
-        url = 'https://technological-adriena-taufiqdp-d94bbf04.koyeb.app/auth/admin/token'
+        url = f'{API_BASE_URL}/auth/admin/token' 
         payload = {
             'username': username,
             'password': password
@@ -57,7 +59,7 @@ def logout(request):
     return redirect('admin-login')
 
 def refresh_token(request):
-    url = 'https://technological-adriena-taufiqdp-d94bbf04.koyeb.app/auth/refresh-token'
+    url = f'{API_BASE_URL}/auth/refresh-token'
     headers = {
         'accept': 'application/json',
         'Authorization': f'Bearer {request.session.get("access_token")}'
@@ -83,7 +85,7 @@ def get_admin_data(request):
     if not access_token:
         return redirect('admin-login')
 
-    url = 'https://technological-adriena-taufiqdp-d94bbf04.koyeb.app/users/me'
+    url = f'{API_BASE_URL}/users/me'
     headers = {
         'accept': 'application/json',
         'Authorization': f'Bearer {access_token}'
@@ -169,7 +171,7 @@ def tambah_pamong(request):
         else:
             files = None
 
-        api_url = 'https://technological-adriena-taufiqdp-d94bbf04.koyeb.app/pamong/'
+        api_url = f'{API_BASE_URL}/pamong/' 
         data = {'pamong': json.dumps(pamong_data)}
 
         if files:
@@ -202,7 +204,7 @@ def list_pamong(request):
     
     access_token = request.session.get('access_token')
     
-    api_url = 'https://technological-adriena-taufiqdp-d94bbf04.koyeb.app/admin/pamong'
+    api_url = f'{API_BASE_URL}/admin/pamong' 
     headers = {
         'Accept': 'application/json',
         'Authorization': f'Bearer {access_token}'
@@ -217,7 +219,8 @@ def list_pamong(request):
     
     context = {
         'admin_data': admin_data,
-        'pamong_list': pamong_list
+        'pamong_list': pamong_list,
+        'API_BASE_URL': API_BASE_URL
     }
     return render(request, 'list-pamong.html', context)
 
@@ -232,7 +235,7 @@ def detail_edit_pamong(request, pamong_id):
     
     access_token = request.session.get('access_token')
     
-    api_url = f'https://technological-adriena-taufiqdp-d94bbf04.koyeb.app/admin/pamong/{pamong_id}'
+    api_url = f'{API_BASE_URL}/admin/pamong/{pamong_id}' 
     headers = {
         'Accept': 'application/json',
         'Authorization': f'Bearer {access_token}'
@@ -299,7 +302,9 @@ def detail_edit_pamong(request, pamong_id):
         except Exception as e:
             messages.error(request, f"An error occurred: {str(e)}")
 
-        return render(request, 'detail-edit-pamong.html', {'pamong': pamong_data, 'admin_data': admin_data})
+        context = {'pamong': pamong_data, 'admin_data': admin_data, 'API_BASE_URL': API_BASE_URL}
+
+        return render(request, 'detail-edit-pamong.html', context)
 
 def hapus_pamong(request, pamong_id):
     if 'access_token' not in request.session:
@@ -310,7 +315,7 @@ def hapus_pamong(request, pamong_id):
     
     access_token = request.session.get('access_token')
     
-    api_url = f'https://technological-adriena-taufiqdp-d94bbf04.koyeb.app/admin/pamong/{pamong_id}'
+    api_url = f'{API_BASE_URL}/admin/pamong/{pamong_id}' 
     print(f"API URL: {api_url}")
     
     headers = {
@@ -353,7 +358,7 @@ def tambah_user(request):
             "email": request.POST.get('email')
         }
 
-        api_url = 'https://technological-adriena-taufiqdp-d94bbf04.koyeb.app/auth/users'
+        api_url = f'{API_BASE_URL}/auth/users' 
         headers = {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
@@ -385,7 +390,7 @@ def list_user(request):
     
     access_token = request.session.get('access_token')
     
-    api_url = 'https://technological-adriena-taufiqdp-d94bbf04.koyeb.app/admin/users'
+    api_url = f'{API_BASE_URL}/admin/users' 
     headers = {
         'Accept': 'application/json',
         'Authorization': f'Bearer {access_token}'
@@ -395,14 +400,25 @@ def list_user(request):
 
     if response.status_code == 200:
         user_list = response.json()
+        
+        # Fetch pamong data to get names
+        pamong_api_url = f'{API_BASE_URL}/admin/pamong'
+        pamong_response = requests.get(pamong_api_url, headers=headers)
+        
+        if pamong_response.status_code == 200:
+            pamong_list = pamong_response.json()
+            pamong_dict = {pamong['id']: pamong['nama'] for pamong in pamong_list}
+            
+            # Add nama to user_list
+            for user in user_list:
+                user['nama'] = pamong_dict.get(user['pamong_id'], 'Unknown')  # Assuming user has pamong_id
+            
     else:
         user_list = []
-        
-    print(user_list)
-    
+
     context = {
         'admin_data': admin_data,
-        'user_list': user_list
+        'user_list': user_list,
     }
     return render(request, 'list-user.html', context)
 
@@ -417,7 +433,7 @@ def detail_edit_user(request, user_id):
     
     access_token = request.session.get('access_token')
     
-    api_url = f'https://technological-adriena-taufiqdp-d94bbf04.koyeb.app/admin/users/{user_id}'
+    api_url = f'{API_BASE_URL}/admin/users/{user_id}' 
     headers = {
         'Accept': 'application/json',
         'Authorization': f'Bearer {access_token}'
@@ -446,7 +462,7 @@ def hapus_user(request, user_id):
     
     access_token = request.session.get('access_token')
     
-    api_url = f'https://technological-adriena-taufiqdp-d94bbf04.koyeb.app/admin/users/{user_id}'
+    api_url = f'{API_BASE_URL}/admin/users/{user_id}' 
     print(f"API URL: {api_url}")
     
     headers = {
@@ -485,7 +501,7 @@ def list_kegiatan(request):
     last_day = calendar.monthrange(today.year, today.month)[1]
     end_date = request.GET.get('end_date', today.replace(day=last_day).strftime('%Y-%m-%d'))
 
-    api_url = f'https://technological-adriena-taufiqdp-d94bbf04.koyeb.app/admin/kegiatan?start_date={start_date}&end_date={end_date}'
+    api_url = f'{API_BASE_URL}/admin/kegiatan?start_date={start_date}&end_date={end_date}' 
     headers = {
         'Accept': 'application/json',
         'Authorization': f'Bearer {access_token}'
@@ -502,14 +518,13 @@ def list_kegiatan(request):
     else:
         kegiatan_list = []
     
-    print(response.status_code)
-    print(response.text)
-    
+
     context = {
         'admin_data': admin_data,
         'kegiatan_list': kegiatan_list,
         'start_date': start_date,
         'end_date': end_date,
+        'API_BASE_URL': API_BASE_URL
     }
     return render(request, 'list-kegiatan.html', context)
 
@@ -524,25 +539,24 @@ def detail_edit_kegiatan(request, kegiatan_id):
     
     access_token = request.session.get('access_token')
     
-    api_url = f'https://technological-adriena-taufiqdp-d94bbf04.koyeb.app/admin/kegiatan/{kegiatan_id}'
+    api_url = f'{API_BASE_URL}/admin/kegiatan/{kegiatan_id}' 
     headers = {
         'Accept': 'application/json',
         'Authorization': f'Bearer {access_token}'
     }
 
-    if request.method == 'GET':
-        # Fetch the current kegiatan details to display
-        response = requests.get(api_url, headers=headers)
-        if response.status_code == 200:
-            kegiatan_data = response.json()
-            context = {
-                'kegiatan': kegiatan_data,
-                'admin_data': admin_data
-            }
-            return render(request, 'detail-kegiatan.html', context)
-        else:
-            messages.error(request, 'Failed to retrieve kegiatan details.')
-            return redirect('list-kegiatan')
+    response = requests.get(api_url, headers=headers)
+
+    if response.status_code == 200:
+        kegiatan_data = response.json()
+        context = {
+            'kegiatan': kegiatan_data,
+            'admin_data': admin_data
+        }
+        return render(request, 'detail-kegiatan.html', context)
+    else:
+        messages.error(request, 'Failed to retrieve kegiatan details.')
+        return redirect('list-kegiatan')
 
 def tambah_kegiatan(request):
     return render(request, 'tambah-kegiatan.html')

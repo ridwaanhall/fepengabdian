@@ -59,10 +59,9 @@
                         <tr>
                             <th>ID</th>
                             <th>Tanggal</th>
-                            <th>Gambar</th>
                             <th>Nama Kegiatan</th>
                             <th>Tempat</th>
-                            <th>User ID</th>
+                            <th>Nama Pamong</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -70,10 +69,9 @@
                         <tr>
                             <th>ID</th>
                             <th>Tanggal</th>
-                            <th>Gambar</th>
                             <th>Nama Kegiatan</th>
                             <th>Tempat</th>
-                            <th>User ID</th>
+                            <th>Nama Pamong</th>
                             <th>Action</th>
                         </tr>
                     </tfoot>
@@ -82,20 +80,9 @@
                         <tr>
                             <td>{{ kegiatan.id }}</td>
                             <td>{{ kegiatan.tanggal }}</td>
-                            <td class="text-center">
-                                {% if kegiatan.gambar %}
-                                    <img src="https://technological-adriena-taufiqdp-d94bbf04.koyeb.app/admin/pamong/{{ kegiatan.id }}/image"
-                                         class="rounded-circle img-thumbnail" alt="Gambar Kegiatan {{ kegiatan.nama_kegiatan }}" width="70px" 
-                                         title="Gambar Kegiatan: {{ kegiatan.nama_kegiatan }}">
-                                {% else %}
-                                    <img src="{% static 'img/undraw_profile.svg' %}"
-                                         class="rounded-circle img-thumbnail" alt="Gambar Kegiatan {{ kegiatan.nama_kegiatan }}" width="70px"
-                                         title="Gambar Default">
-                                {% endif %}
-                            </td>
                             <td>{{ kegiatan.nama_kegiatan }}</td>
                             <td>{{ kegiatan.tempat }}</td>
-                            <td>{{ kegiatan.user_id }}</td>
+                            <td><a href="{% url 'detail-edit-pamong' kegiatan.pamong_id %}">{{ kegiatan.nama_pamong }}</a></td>
                             <td>
                                 <a href="{% url 'detail-edit-kegiatan' kegiatan.id %}" class="btn btn-success mb-1 btn-sm" title="Edit Kegiatan">
                                     <i class="fas fa-edit"></i>
