@@ -124,8 +124,39 @@ def dashboard(request):
     
     admin_data = get_admin_data(request)
     
+    access_token = request.session.get('access_token')
+    
+    # Default to this month
+    today = datetime.today()
+    start_date = request.GET.get('start_date', today.replace(day=1).strftime('%Y-%m-%d'))
+    last_day = calendar.monthrange(today.year, today.month)[1]
+    end_date = request.GET.get('end_date', today.replace(day=last_day).strftime('%Y-%m-%d'))
+
+    api_url = f'https://technological-adriena-taufiqdp-d94bbf04.koyeb.app/admin/kegiatan?start_date={start_date}&end_date={end_date}'
+    headers = {
+        'Accept': 'application/json',
+        'Authorization': f'Bearer {access_token}'
+    }
+
+    response = requests.get(api_url, headers=headers)
+
+    if response.status_code == 200:
+        response_data = response.json()
+        if isinstance(response_data, dict) and response_data.get("detail") == "No kegiatan found":
+            kegiatan_list = []
+        else:
+            kegiatan_list = response_data
+    else:
+        kegiatan_list = []
+    
+    print(response.status_code)
+    print(response.text)
+    
     context = {
-        'admin_data': admin_data
+        'admin_data': admin_data,
+        'kegiatan_list': kegiatan_list,
+        'start_date': start_date,
+        'end_date': end_date,
     }
 
     return render(request, 'dashboard.html', context)
