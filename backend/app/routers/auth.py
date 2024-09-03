@@ -157,7 +157,7 @@ async def login_for_access_token_web(
         )
 
     access_token = create_access_token(
-        user.username, user.id, user.is_admin, timedelta(days=7)
+        user.username, user.id, user.is_admin, timedelta(days=7.0)
     )
 
     return {

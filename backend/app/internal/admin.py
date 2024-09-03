@@ -143,7 +143,7 @@ async def get_pamong_image(pamong_id: int, db: db_dependency):
 # Get all kegiatan by date
 @router.get("/kegiatan")
 async def get_kegiatan(
-    db: db_dependency, admin: admin_dependency, start_date: date, end_date: date
+    db: db_dependency, start_date: date, end_date: date
 ):
     kegiatan_all = (
         db.query(Kegiatan)

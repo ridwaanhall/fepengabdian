@@ -284,11 +284,7 @@ def detail_edit_pamong(request, pamong_id):
         data = {'pamong': json.dumps(pamong_data)}
 
         try:
-            if files:
-                response = requests.put(api_url, files=files, data=data, headers=headers)
-            else:
-                headers['Content-Type'] = 'application/json'
-                response = requests.put(api_url, data=json.dumps(pamong_data), headers=headers)
+            response = requests.put(api_url, files=files, data=data, headers=headers)
 
             if response.status_code == 200:
                 messages.success(request, 'Pamong berhasil diperbarui!')
@@ -302,7 +298,8 @@ def detail_edit_pamong(request, pamong_id):
         except Exception as e:
             messages.error(request, f"An error occurred: {str(e)}")
 
-        context = {'pamong': pamong_data, 'admin_data': admin_data, 'API_BASE_URL': API_BASE_URL}
+        context = {'pamong': pamong_data, 'admin_data': admin_data, 'API_BASE_URL': "aaaaaaa"}
+        print(API_BASE_URL)
 
         return render(request, 'detail-edit-pamong.html', context)
 
