@@ -29,4 +29,5 @@ urlpatterns = [
     
     # agenda
     path('kalender-agenda/', views.kalender_agenda, name='kalender-agenda'),
+    path('tambah-agenda/', views.tambah_agenda, name='tambah-agenda'),
 ]

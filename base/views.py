@@ -580,4 +580,70 @@ def tambah_kegiatan(request):
     return render(request, 'tambah-kegiatan.html')
 
 def kalender_agenda(request):
-    return render(request, 'kalender-agenda.html')
+    if 'access_token' not in request.session:
+        return redirect('admin-login')
+
+    # if not refresh_token(request):
+    #     return redirect('admin-login')
+    
+    admin_data = get_admin_data(request)
+    
+    access_token = request.session.get('access_token')
+    
+    api_url = f'{settings.API_URL}/agenda/'
+    headers = {
+        'Accept': 'application/json',
+        'Authorization': f'Bearer {access_token}'
+    }
+
+    response = requests.get(api_url, headers=headers)
+
+    if response.status_code == 200:
+        response_data = response.json()
+        if isinstance(response_data, dict) and response_data.get("detail") == "No kegiatan found":
+            agenda_list = []
+        else:
+            agenda_list = response_data
+    else:
+        agenda_list = []
+    
+    print(response.status_code)
+    print(response.text)
+    
+    context = {
+        'agenda_list': agenda_list,
+        'admin_data': admin_data
+    }
+    
+    return render(request, 'kalender-agenda.html', context)
+
+def tambah_agenda(request):
+    if request.method == 'POST':
+        access_token = request.session.get('access_token')
+        api_url = f'{settings.API_URL}/agenda/'
+        headers = {
+            'Accept': 'application/json',
+            'Authorization': f'Bearer {access_token}',
+            'Content-Type': 'application/json',  # Menyatakan bahwa kita mengirimkan data sebagai JSON
+        }
+        
+        # Mengambil data dari form dan mengubahnya menjadi format JSON
+        data = {
+            'nama_agenda': request.POST.get('nama_agenda'),
+            'tanggal_mulai': request.POST.get('tanggal_mulai'),
+            'tanggal_selesai': request.POST.get('tanggal_selesai'),
+            'tempat': request.POST.get('tempat'),
+            'deskripsi': request.POST.get('deskripsi'),
+        }
+        
+        # Kirim data sebagai JSON
+        response = requests.post(api_url, headers=headers, data=json.dumps(data))
+        
+        if response.status_code == 201:  # Created
+            messages.success(request, 'Agenda berhasil ditambahkan.')
+        else:
+            messages.error(request, f'Gagal menambahkan agenda: {response.text}')
+        
+        return redirect('kalender-agenda')
+    else:
+        return redirect('kalender-agenda')

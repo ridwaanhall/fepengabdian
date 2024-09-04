@@ -40,6 +40,52 @@
     {% endfor %}
     {% endif %}
 
+<!-- Modal for Adding Agenda -->
+<div class="modal fade" id="addAgendaModal" tabindex="-1" role="dialog" aria-labelledby="addAgendaModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addAgendaModalLabel">Tambah Agenda</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form method="post" action="{% url 'tambah-agenda' %}">
+                {% csrf_token %}
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="agendaTitle">Judul Agenda</label>
+                        <input type="text" class="form-control" id="agendaTitle" name="nama_agenda" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="agendaStart">Tanggal Mulai</label>
+                        <input type="datetime-local" class="form-control" id="agendaStart" name="tanggal_mulai" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="agendaEnd">Tanggal Selesai</label>
+                        <input type="datetime-local" class="form-control" id="agendaEnd" name="tanggal_selesai" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="agendaPlace">Tempat</label>
+                        <input type="text" class="form-control" id="agendaPlace" name="tempat" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="agendaDescription">Deskripsi</label>
+                        <textarea class="form-control" id="agendaDescription" name="deskripsi" rows="3" required></textarea>
+                    </div>
+                    <input type="hidden" id="agendaDate" name="date">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                    <button type="submit" class="btn btn-primary">Simpan Agenda</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
     <div id='calendar'></div>
 
 </div>
@@ -55,76 +101,52 @@
 <script src="{% static 'calendar/fullcalendar/packages/daygrid/main.js' %}"></script>
 
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-var calendarEl = document.getElementById('calendar');
+    document.addEventListener('DOMContentLoaded', function() {
+        var calendarEl = document.getElementById('calendar');
+    
+        // Data agenda asli
+        var agendaData = {{ agenda_list|safe }};
 
-var calendar = new FullCalendar.Calendar(calendarEl, {
-  plugins: [ 'interaction', 'dayGrid' ],
-  defaultDate: '2020-02-12',
-  editable: true,
-  eventLimit: true, // allow "more" link when too many events
-  events: [
-    {
-      title: 'All Day Event',
-      start: '2020-02-01'
-    },
-    {
-      title: 'Long Event',
-      start: '2020-02-07',
-      end: '2020-02-10'
-    },
-    {
-      groupId: 999,
-      title: 'Repeating Event',
-      start: '2020-02-09T16:00:00'
-    },
-    {
-      groupId: 999,
-      title: 'Repeating Event',
-      start: '2020-02-16T16:00:00'
-    },
-    {
-      title: 'Conference',
-      start: '2020-02-11',
-      end: '2020-02-13'
-    },
-    {
-      title: 'Meeting',
-      start: '2020-02-12T10:30:00',
-      end: '2020-02-12T12:30:00'
-    },
-    {
-      title: 'Lunch',
-      start: '2020-02-12T12:00:00'
-    },
-    {
-      title: 'Meeting',
-      start: '2020-02-12T14:30:00'
-    },
-    {
-      title: 'Happy Hour',
-      start: '2020-02-12T17:30:00'
-    },
-    {
-      title: 'Dinner',
-      start: '2020-02-12T20:00:00'
-    },
-    {
-      title: 'Birthday Party',
-      start: '2020-02-13T07:00:00'
-    },
-    {
-      title: 'Click for Google',
-      url: 'http://google.com/',
-      start: '2020-02-28'
-    }
-  ]
-});
+        // Mengubah data agenda menjadi format yang diperlukan FullCalendar
+        var events = agendaData.map(function(item) {
+            return {
+                id: item.id,
+                title: item.nama_agenda,
+                start: item.tanggal_mulai,
+                end: item.tanggal_selesai,
+                description: item.deskripsi,
+                location: item.tempat
+            };
+        });
 
-calendar.render();
-});
+        var today = new Date();
+        var dd = String(today.getDate()).padStart(2, '0');
+        var mm = String(today.getMonth() + 1).padStart(2, '0');
+        var yyyy = today.getFullYear();
+        today = yyyy + '-' + mm + '-' + dd;
 
+        var calendar = new FullCalendar.Calendar(calendarEl, {
+            plugins: [ 'interaction', 'dayGrid' ],
+            defaultDate: today,
+            editable: true,
+            eventLimit: true, // allow "more" link when too many events
+            events: events,
+            dateClick: function(info) {
+                // Format the clicked date for the datetime-local input
+                var dateStr = info.dateStr + "T00:00";
+                
+                // Set the date in the form
+                document.getElementById('agendaStart').value = dateStr;
+                document.getElementById('agendaEnd').value = dateStr;
+    
+                // Show the modal
+                $('#addAgendaModal').modal('show');
+            }
+        });
+    
+        calendar.render();
+    });
 </script>
 
-<script src="{% static 'calendar/js/main.js"></script>
+<script src="{% static 'calendar/js/main.js' %}"></script>
 {% endblock extra_js %}
