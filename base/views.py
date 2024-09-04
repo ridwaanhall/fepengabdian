@@ -36,6 +36,8 @@ def login(request):
             # If successful, extract the access token and refresh token
             token_data = response.json()
             access_token = token_data['access_token']
+            
+            print(access_token)
 
             # Store the tokens in session
             request.session['access_token'] = access_token
@@ -56,22 +58,22 @@ def logout(request):
     request.session.flush()
     return redirect('admin-login')
 
-def refresh_token(request):
-    url = 'https://technological-adriena-taufiqdp-d94bbf04.koyeb.app/auth/refresh-token'
-    headers = {
-        'accept': 'application/json',
-        'Authorization': f'Bearer {request.session.get("access_token")}'
-    }
+# def refresh_token(request):
+#     url = 'https://technological-adriena-taufiqdp-d94bbf04.koyeb.app/auth/refresh-token'
+#     headers = {
+#         'accept': 'application/json',
+#         'Authorization': f'Bearer {request.session.get("access_token")}'
+#     }
 
-    response = requests.post(url, headers=headers)
+#     response = requests.post(url, headers=headers)
 
-    if response.status_code == 200:
-        token_data = response.json()
-        request.session['access_token'] = token_data['access_token']
-        return True
-    else:
-        messages.error(request, "Session expired. Please log in again.")
-        return False
+#     if response.status_code == 200:
+#         token_data = response.json()
+#         request.session['access_token'] = token_data['access_token']
+#         return True
+#     else:
+#         messages.error(request, response.text)
+#         return False
 
 def forgot_password(request):
     return render(request, 'forgot-password.html')
@@ -119,12 +121,14 @@ def dashboard(request):
     if 'access_token' not in request.session:
         return redirect('admin-login')
 
-    if not refresh_token(request):
-        return redirect('admin-login')
+    # if not refresh_token(request):
+    #     return redirect('admin-login')
     
     admin_data = get_admin_data(request)
     
     access_token = request.session.get('access_token')
+    
+    print(access_token)
     
     # Set start_date and end_date to today
     today = datetime.today().strftime('%Y-%m-%d')
@@ -167,8 +171,8 @@ def tambah_pamong(request):
     if 'access_token' not in request.session:
         return redirect('admin-login')
 
-    if not refresh_token(request):
-        return redirect('admin-login')
+    # if not refresh_token(request):
+    #     return redirect('admin-login')
     
     admin_data = get_admin_data(request)
     
@@ -226,8 +230,8 @@ def list_pamong(request):
     if 'access_token' not in request.session:
         return redirect('admin-login')
 
-    if not refresh_token(request):
-        return redirect('admin-login')
+    # if not refresh_token(request):
+    #     return redirect('admin-login')
     
     admin_data = get_admin_data(request)
     
@@ -256,8 +260,8 @@ def detail_edit_pamong(request, pamong_id):
     if 'access_token' not in request.session:
         return redirect('admin-login')
 
-    if not refresh_token(request):
-        return redirect('admin-login')
+    # if not refresh_token(request):
+    #     return redirect('admin-login')
     
     admin_data = get_admin_data(request)
     
@@ -312,11 +316,7 @@ def detail_edit_pamong(request, pamong_id):
         data = {'pamong': json.dumps(pamong_data)}
 
         try:
-            if files:
-                response = requests.put(api_url, files=files, data=data, headers=headers)
-            else:
-                headers['Content-Type'] = 'application/json'
-                response = requests.put(api_url, data=json.dumps(pamong_data), headers=headers)
+            response = requests.put(api_url, files=files, data=data, headers=headers)
 
             if response.status_code == 200:
                 messages.success(request, 'Pamong berhasil diperbarui!')
@@ -336,8 +336,8 @@ def hapus_pamong(request, pamong_id):
     if 'access_token' not in request.session:
         return redirect('admin-login')
 
-    if not refresh_token(request):
-        return redirect('admin-login')
+    # if not refresh_token(request):
+    #     return redirect('admin-login')
     
     access_token = request.session.get('access_token')
     
@@ -367,8 +367,8 @@ def tambah_user(request):
     if 'access_token' not in request.session:
         return redirect('admin-login')
 
-    if not refresh_token(request):
-        return redirect('admin-login')
+    # if not refresh_token(request):
+    #     return redirect('admin-login')
     
     admin_data = get_admin_data(request)
     
@@ -409,8 +409,8 @@ def list_user(request):
     if 'access_token' not in request.session:
         return redirect('admin-login')
 
-    if not refresh_token(request):
-        return redirect('admin-login')
+    # if not refresh_token(request):
+    #     return redirect('admin-login')
     
     admin_data = get_admin_data(request)
     
@@ -441,8 +441,8 @@ def detail_edit_user(request, user_id):
     if 'access_token' not in request.session:
         return redirect('admin-login')
 
-    if not refresh_token(request):
-        return redirect('admin-login')
+    # if not refresh_token(request):
+    #     return redirect('admin-login')
     
     admin_data = get_admin_data(request)
     
@@ -472,8 +472,8 @@ def hapus_user(request, user_id):
     if 'access_token' not in request.session:
         return redirect('admin-login')
 
-    if not refresh_token(request):
-        return redirect('admin-login')
+    # if not refresh_token(request):
+    #     return redirect('admin-login')
     
     access_token = request.session.get('access_token')
     
@@ -503,8 +503,8 @@ def list_kegiatan(request):
     if 'access_token' not in request.session:
         return redirect('admin-login')
 
-    if not refresh_token(request):
-        return redirect('admin-login')
+    # if not refresh_token(request):
+    #     return redirect('admin-login')
     
     admin_data = get_admin_data(request)
     
@@ -548,8 +548,8 @@ def detail_edit_kegiatan(request, kegiatan_id):
     if 'access_token' not in request.session:
         return redirect('admin-login')
 
-    if not refresh_token(request):
-        return redirect('admin-login')
+    # if not refresh_token(request):
+    #     return redirect('admin-login')
     
     admin_data = get_admin_data(request)
     
