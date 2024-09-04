@@ -46,7 +46,7 @@
                             <th>Pamong ID</th>
                             <th>Username</th>
                             <th>Email</th>
-                            <th>Is Admin</th>
+                            <!-- <th>Is Admin</th> -->
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -56,7 +56,7 @@
                             <th>Pamong ID</th>
                             <th>Username</th>
                             <th>Email</th>
-                            <th>Is Admin</th>
+                            <!-- <th>Is Admin</th> -->
                             <th>Action</th>
                         </tr>
                     </tfoot>
@@ -67,10 +67,10 @@
                             <td>{{ user.pamong_id }}</td>
                             <td>{{ user.username }}</td>
                             <td>{{ user.email }}</td>
-                            <td>{{ user.is_admin }}</td>
+                            <!-- <td>{{ user.is_admin }}</td> -->
                             <td>
                                 <a href="{% url 'detail-edit-user' user.id %}" class="btn btn-success mb-1 btn-sm">
-                                    <i class="fa fa-edit"></i>
+                                    <i class="fa fa-eye"></i>
                                 </a>
                                 <a href="{% url 'hapus-user' user.id %}" class="btn btn-danger mb-1 btn-sm btn-delete">
                                     <i class="fa fa-trash"></i>

@@ -43,7 +43,7 @@
                     <thead>
                         <tr>
                             <th>ID</th>
-                            <th>Profile Photo</th>
+                            <!-- <th>Profile Photo</th> -->
                             <th>Nama</th>
                             <th>NIP</th>
                             <th>Pekerjaan</th>
@@ -55,7 +55,7 @@
                     <tfoot>
                         <tr>
                             <th>ID</th>
-                            <th>Profile Photo</th>
+                            <!-- <th>Profile Photo</th> -->
                             <th>Nama</th>
                             <th>NIP</th>
                             <th>Pekerjaan</th>
@@ -68,14 +68,14 @@
                         {% for p in pamong_list %}
                         <tr>
                             <td>{{ p.id }}</td>
-                            <td class="text-center">
+                            <!-- <td class="text-center">
                                 {% if p.gambar %}
                                     <img src="https://technological-adriena-taufiqdp-d94bbf04.koyeb.app/admin/pamong/{{ p.id }}/image" class="rounded-circle" alt="Profile Photo {{ p.nama }}" width="50px">
                                 {% else %}
                                     <img src="{% static 'img/undraw_profile.svg' %}" class="rounded-circle" alt="Profile Photo {{ p.nama }}" width="50px">
                                 {% endif %}
-                            </td>
-                            <td>{{ p.nama }}</td>
+                            </td> -->
+                            <td><a href="{% url 'detail-edit-pamong' p.id %}">{{ p.nama }}</a></td>
                             <td>{{ p.nip }}</td>
                             <td>{{ p.pekerjaan }}</td>
                             <td>{{ p.jabatan }}</td>
