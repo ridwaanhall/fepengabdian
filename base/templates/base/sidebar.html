@@ -72,18 +72,18 @@
     <hr class="sidebar-divider">
 
     <div class="sidebar-heading">
-        Kalender Kegiatan
+        Kalender Agenda
     </div>
 
-    <li class="nav-item {% if request.resolver_match.url_name == 'list-user' or request.resolver_match.url_name == 'tambah-user' %} active {% endif %}">
-        <a class="nav-link {% if request.resolver_match.url_name != 'list-user' and request.resolver_match.url_name != 'tambah-user' %} collapsed {% endif %}" href="#" data-toggle="collapse" data-target="#collapseKalender"
+    <li class="nav-item {% if request.resolver_match.url_name == 'kalender-agenda' %} active {% endif %}">
+        <a class="nav-link {% if request.resolver_match.url_name != 'kalender-agenda' and request.resolver_match.url_name != 'tambah-user' %} collapsed {% endif %}" href="#" data-toggle="collapse" data-target="#collapseKalender"
             aria-expanded="true" aria-controls="collapseKalender">
             <i class="fas fa-fw fa-cog"></i>
-            <span>Kalender Kegiatan</span>
+            <span>Kalender Agenda</span>
         </a>
-        <div id="collapseKalender" class="collapse {% if request.resolver_match.url_name == 'list-user' or request.resolver_match.url_name == 'tambah-user' %} show {% endif %}" aria-labelledby="DataUser" data-parent="#accordionSidebar">
+        <div id="collapseKalender" class="collapse {% if request.resolver_match.url_name == 'kalender-agenda' %} show {% endif %}" aria-labelledby="DataUser" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
-                <a class="collapse-item {% if request.resolver_match.url_name == 'list-user' %} active {% endif %}" href="{% url 'list-user' %}">Kalender Kegiatan</a>
+                <a class="collapse-item {% if request.resolver_match.url_name == 'kalender-agenda' %} active {% endif %}" href="{% url 'kalender-agenda' %}">Kalender Agenda</a>
                 <!-- <a class="collapse-item {% if request.resolver_match.url_name == 'tambah-user' %} active {% endif %}" href="{% url 'tambah-user' %}">Tambah User</a> -->
             </div>
         </div>

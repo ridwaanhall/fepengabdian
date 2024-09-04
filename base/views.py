@@ -578,3 +578,6 @@ def detail_edit_kegiatan(request, kegiatan_id):
 
 def tambah_kegiatan(request):
     return render(request, 'tambah-kegiatan.html')
+
+def kalender_agenda(request):
+    return render(request, 'kalender-agenda.html')

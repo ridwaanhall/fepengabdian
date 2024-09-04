@@ -26,4 +26,7 @@ urlpatterns = [
     path('list-kegiatan/', views.list_kegiatan, name='list-kegiatan'),
     path('detail-edit-kegiatan/<int:kegiatan_id>', views.detail_edit_kegiatan, name='detail-edit-kegiatan'),
     path('tambah-kegiatan/', views.tambah_kegiatan, name='tambah-kegiatan'),
+    
+    # agenda
+    path('kalender-agenda/', views.kalender_agenda, name='kalender-agenda'),
 ]
