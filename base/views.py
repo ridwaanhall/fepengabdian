@@ -6,6 +6,7 @@ import json
 from requests.exceptions import ChunkedEncodingError, Timeout, RequestException
 from datetime import datetime, timedelta
 import calendar, time
+from django.conf import settings
 
 # check
 # def index(request):
@@ -19,7 +20,7 @@ def login(request):
         password = request.POST.get('password')
 
         # Prepare the API request
-        url = 'https://technological-adriena-taufiqdp-d94bbf04.koyeb.app/auth/admin/token'
+        url = f'{settings.API_URL}/auth/admin/token'
         payload = {
             'username': username,
             'password': password
@@ -59,7 +60,7 @@ def logout(request):
     return redirect('admin-login')
 
 # def refresh_token(request):
-#     url = 'https://technological-adriena-taufiqdp-d94bbf04.koyeb.app/auth/refresh-token'
+#     url = f'{settings.API_URL}/auth/refresh-token'
 #     headers = {
 #         'accept': 'application/json',
 #         'Authorization': f'Bearer {request.session.get("access_token")}'
@@ -85,7 +86,7 @@ def get_admin_data(request):
     if not access_token:
         return redirect('admin-login')
 
-    url = 'https://technological-adriena-taufiqdp-d94bbf04.koyeb.app/users/me'
+    url = f'{settings.API_URL}/users/me'
     headers = {
         'accept': 'application/json',
         'Authorization': f'Bearer {access_token}'
@@ -135,7 +136,7 @@ def dashboard(request):
     start_date = today
     end_date = today
 
-    api_url = f'https://technological-adriena-taufiqdp-d94bbf04.koyeb.app/admin/kegiatan?start_date={start_date}&end_date={end_date}'
+    api_url = f'{settings.API_URL}/admin/kegiatan?start_date={start_date}&end_date={end_date}'
     headers = {
         'Accept': 'application/json',
         'Authorization': f'Bearer {access_token}'
@@ -204,7 +205,7 @@ def tambah_pamong(request):
         else:
             files = None
 
-        api_url = 'https://technological-adriena-taufiqdp-d94bbf04.koyeb.app/pamong/'
+        api_url = f'{settings.API_URL}/pamong/'
         data = {'pamong': json.dumps(pamong_data)}
 
         if files:
@@ -237,7 +238,7 @@ def list_pamong(request):
     
     access_token = request.session.get('access_token')
     
-    api_url = 'https://technological-adriena-taufiqdp-d94bbf04.koyeb.app/admin/pamong'
+    api_url = f'{settings.API_URL}/admin/pamong'
     headers = {
         'Accept': 'application/json',
         'Authorization': f'Bearer {access_token}'
@@ -267,7 +268,7 @@ def detail_edit_pamong(request, pamong_id):
     
     access_token = request.session.get('access_token')
     
-    api_url = f'https://technological-adriena-taufiqdp-d94bbf04.koyeb.app/admin/pamong/{pamong_id}'
+    api_url = f'{settings.API_URL}/admin/pamong/{pamong_id}'
     headers = {
         'Accept': 'application/json',
         'Authorization': f'Bearer {access_token}'
@@ -341,7 +342,7 @@ def hapus_pamong(request, pamong_id):
     
     access_token = request.session.get('access_token')
     
-    api_url = f'https://technological-adriena-taufiqdp-d94bbf04.koyeb.app/admin/pamong/{pamong_id}'
+    api_url = f'{settings.API_URL}/admin/pamong/{pamong_id}'
     print(f"API URL: {api_url}")
     
     headers = {
@@ -384,7 +385,7 @@ def tambah_user(request):
             "email": request.POST.get('email')
         }
 
-        api_url = 'https://technological-adriena-taufiqdp-d94bbf04.koyeb.app/auth/users'
+        api_url = f'{settings.API_URL}/auth/users'
         headers = {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
@@ -416,7 +417,7 @@ def list_user(request):
     
     access_token = request.session.get('access_token')
     
-    api_url = 'https://technological-adriena-taufiqdp-d94bbf04.koyeb.app/admin/users'
+    api_url = f'{settings.API_URL}/admin/users'
     headers = {
         'Accept': 'application/json',
         'Authorization': f'Bearer {access_token}'
@@ -448,7 +449,7 @@ def detail_edit_user(request, user_id):
     
     access_token = request.session.get('access_token')
     
-    api_url = f'https://technological-adriena-taufiqdp-d94bbf04.koyeb.app/admin/users/{user_id}'
+    api_url = f'{settings.API_URL}/admin/users/{user_id}'
     headers = {
         'Accept': 'application/json',
         'Authorization': f'Bearer {access_token}'
@@ -477,7 +478,7 @@ def hapus_user(request, user_id):
     
     access_token = request.session.get('access_token')
     
-    api_url = f'https://technological-adriena-taufiqdp-d94bbf04.koyeb.app/admin/users/{user_id}'
+    api_url = f'{settings.API_URL}/admin/users/{user_id}'
     print(f"API URL: {api_url}")
     
     headers = {
@@ -516,7 +517,7 @@ def list_kegiatan(request):
     last_day = calendar.monthrange(today.year, today.month)[1]
     end_date = request.GET.get('end_date', today.replace(day=last_day).strftime('%Y-%m-%d'))
 
-    api_url = f'https://technological-adriena-taufiqdp-d94bbf04.koyeb.app/admin/kegiatan?start_date={start_date}&end_date={end_date}'
+    api_url = f'{settings.API_URL}/admin/kegiatan?start_date={start_date}&end_date={end_date}'
     headers = {
         'Accept': 'application/json',
         'Authorization': f'Bearer {access_token}'
@@ -555,7 +556,7 @@ def detail_edit_kegiatan(request, kegiatan_id):
     
     access_token = request.session.get('access_token')
     
-    api_url = f'https://technological-adriena-taufiqdp-d94bbf04.koyeb.app/admin/kegiatan/{kegiatan_id}'
+    api_url = f'{settings.API_URL}/admin/kegiatan/{kegiatan_id}'
     headers = {
         'Accept': 'application/json',
         'Authorization': f'Bearer {access_token}'
