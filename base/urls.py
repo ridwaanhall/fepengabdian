@@ -30,4 +30,6 @@ urlpatterns = [
     # agenda
     path('kalender-agenda/', views.kalender_agenda, name='kalender-agenda'),
     path('tambah-agenda/', views.tambah_agenda, name='tambah-agenda'),
+    path('update-agenda/<int:agenda_id>', views.update_agenda, name='update-agenda'),
+    path('delete-agenda/<int:agenda_id>', views.delete_agenda, name='delete-agenda'),
 ]

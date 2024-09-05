@@ -1,12 +1,13 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 import requests
 import json
 from requests.exceptions import ChunkedEncodingError, Timeout, RequestException
 from datetime import datetime, timedelta
 import calendar, time
 from django.conf import settings
+from django.urls import reverse
 
 # check
 # def index(request):
@@ -612,7 +613,8 @@ def kalender_agenda(request):
     
     context = {
         'agenda_list': agenda_list,
-        'admin_data': admin_data
+        'admin_data': admin_data,
+        'access_token': access_token
     }
     
     return render(request, 'kalender-agenda.html', context)
@@ -647,3 +649,55 @@ def tambah_agenda(request):
         return redirect('kalender-agenda')
     else:
         return redirect('kalender-agenda')
+    
+def update_agenda(request, agenda_id):
+    if request.method == 'POST':
+        payload = {
+            'nama_agenda': request.POST['nama_agenda'],
+            'tanggal_mulai': request.POST['tanggal_mulai'],
+            'tanggal_selesai': request.POST['tanggal_selesai'],
+            'tempat': request.POST['tempat'],
+            'deskripsi': request.POST['deskripsi']
+        }
+        headers = {
+            'Content-Type': 'application/json',
+            'Authorization': f'Bearer {request.session.get("access_token")}'
+        }
+        response = requests.put(
+            f"{settings.API_URL}/agenda/{agenda_id}",
+            json=payload,
+            headers=headers
+        )
+        if response.status_code == 200:
+            messages.success(request, "Agenda berhasil diperbarui.")
+        else:
+            messages.error(request, "Gagal memperbarui agenda.")
+
+    return redirect(reverse('kalender-agenda'))
+
+def delete_agenda(request, agenda_id):
+    if 'access_token' not in request.session:
+        return redirect('admin-login')
+
+    # if not refresh_token(request):
+    #     return redirect('admin-login')
+    
+    admin_data = get_admin_data(request)
+    
+    access_token = request.session.get('access_token')
+    
+    if request.method == 'DELETE':
+        headers = {
+            'Content-Type': 'application/json',
+            'Authorization': f'Bearer {access_token}'
+        }
+        response = requests.delete(
+            f"{settings.API_URL}/agenda/{agenda_id}",
+            headers=headers
+        )
+        if response.status_code == 200:
+            messages.success(request, "Agenda berhasil dihapus.")
+        else:
+            messages.error(request, "Gagal menghapus agenda.")
+
+    return JsonResponse({'status': 'success' if response.status_code == 204 else 'error'})

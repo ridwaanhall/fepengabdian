@@ -5,16 +5,15 @@
 {% block title %}Kalender Agenda{% endblock title %}
 
 {% block extra_css %}
-    <link rel="stylesheet" href="{% static 'calendar/fonts/icomoon/style.css' %}">
-    
-    <link href="{% static 'calendar/fullcalendar/packages/core/main.css' %}" rel='stylesheet' />
-    <link href="{% static 'calendar/fullcalendar/packages/daygrid/main.css' %}" rel='stylesheet' />
+<link rel="stylesheet" href="{% static 'calendar/fonts/icomoon/style.css' %}">
+<link href="{% static 'calendar/fullcalendar/packages/core/main.css' %}" rel='stylesheet' />
+<link href="{% static 'calendar/fullcalendar/packages/daygrid/main.css' %}" rel='stylesheet' />
 
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="{% static 'calendar/css/bootstrap.min.css' %}">
+<!-- Bootstrap CSS -->
+<link rel="stylesheet" href="{% static 'calendar/css/bootstrap.min.css' %}">
 
-    <!-- Style -->
-    <link rel="stylesheet" href="{% static 'calendar/css/style.css' %}">
+<!-- Style -->
+<link rel="stylesheet" href="{% static 'calendar/css/style.css' %}">
 {% endblock extra_css %}
 
 {% block content %}
@@ -40,19 +39,20 @@
     {% endfor %}
     {% endif %}
 
-<!-- Modal for Adding Agenda -->
-<div class="modal fade" id="addAgendaModal" tabindex="-1" role="dialog" aria-labelledby="addAgendaModalLabel" aria-hidden="true">
+<!-- Modal for Adding/Updating Agenda -->
+<div class="modal fade" id="agendaModal" tabindex="-1" role="dialog" aria-labelledby="agendaModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="addAgendaModalLabel">Tambah Agenda</h5>
+                <h5 class="modal-title" id="agendaModalLabel">Agenda</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form method="post" action="{% url 'tambah-agenda' %}">
+            <form id="agendaForm" method="post">
                 {% csrf_token %}
                 <div class="modal-body">
+                    <input type="hidden" id="agendaId" name="agendaId">
                     <div class="form-group">
                         <label for="agendaTitle">Judul Agenda</label>
                         <input type="text" class="form-control" id="agendaTitle" name="nama_agenda" required>
@@ -73,20 +73,18 @@
                         <label for="agendaDescription">Deskripsi</label>
                         <textarea class="form-control" id="agendaDescription" name="deskripsi" rows="3" required></textarea>
                     </div>
-                    <input type="hidden" id="agendaDate" name="date">
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
                     <button type="submit" class="btn btn-primary">Simpan Agenda</button>
+                    <button type="button" class="btn btn-danger" id="deleteButton">Hapus Agenda</button>
                 </div>
             </form>
         </div>
     </div>
 </div>
 
-
-
-    <div id='calendar'></div>
+<div id='calendar'></div>
 
 </div>
 {% endblock content %}
@@ -103,11 +101,7 @@
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         var calendarEl = document.getElementById('calendar');
-    
-        // Data agenda asli
         var agendaData = {{ agenda_list|safe }};
-
-        // Mengubah data agenda menjadi format yang diperlukan FullCalendar
         var events = agendaData.map(function(item) {
             return {
                 id: item.id,
@@ -118,34 +112,61 @@
                 location: item.tempat
             };
         });
-
-        var today = new Date();
-        var dd = String(today.getDate()).padStart(2, '0');
-        var mm = String(today.getMonth() + 1).padStart(2, '0');
-        var yyyy = today.getFullYear();
-        today = yyyy + '-' + mm + '-' + dd;
-
+    
         var calendar = new FullCalendar.Calendar(calendarEl, {
-            plugins: [ 'interaction', 'dayGrid' ],
-            defaultDate: today,
+            plugins: ['interaction', 'dayGrid'],
+            defaultDate: new Date(),
             editable: true,
-            eventLimit: true, // allow "more" link when too many events
+            eventLimit: true,
             events: events,
             dateClick: function(info) {
-                // Format the clicked date for the datetime-local input
-                var dateStr = info.dateStr + "T00:00";
-                
-                // Set the date in the form
-                document.getElementById('agendaStart').value = dateStr;
-                document.getElementById('agendaEnd').value = dateStr;
-    
-                // Show the modal
-                $('#addAgendaModal').modal('show');
+                document.getElementById('agendaForm').action = "{% url 'tambah-agenda' %}";
+                document.getElementById('agendaForm').reset();
+                document.getElementById('agendaStart').value = info.dateStr + "T00:00";
+                document.getElementById('agendaEnd').value = info.dateStr + "T00:00";
+                $('#agendaModal').modal('show');
+            },
+            eventClick: function(info) {
+                var event = info.event;
+                document.getElementById('agendaForm').action = "{% url 'update-agenda' 0 %}".replace('0', event.id);
+                document.getElementById('agendaTitle').value = event.title;
+                document.getElementById('agendaStart').value = event.start.toISOString().slice(0, 16);
+                document.getElementById('agendaEnd').value = event.end.toISOString().slice(0, 16);
+                document.getElementById('agendaPlace').value = event.extendedProps.location;
+                document.getElementById('agendaDescription').value = event.extendedProps.description;
+                document.getElementById('agendaId').value = event.id;  // Store agenda ID in a hidden field
+                document.getElementById('agendaForm').dataset.agendaId = event.id; // Also store it in a data attribute
+                $('#agendaModal').modal('show');
             }
         });
     
         calendar.render();
     });
+    
+    document.getElementById('deleteButton').addEventListener('click', function() {
+        var agendaId = document.getElementById('agendaId').value; // Get the ID from the hidden field or data attribute
+        if (confirm("Apakah Anda yakin ingin menghapus agenda ini?")) {
+            fetch(`{% url 'delete-agenda' 0 %}`.replace('0', agendaId), {
+                method: 'DELETE',
+                headers: {
+                    'X-CSRFToken': '{{ csrf_token }}',
+                    'Content-Type': 'application/json',
+                }
+            }).then(response => {
+                return response.json().then(data => {
+                    if (response.ok) {
+                        window.location.reload();
+                    } else {
+                        alert(`Gagal menghapus agenda. Status: ${response.status}. Pesan: ${data.detail[0].msg}`);
+                    }
+                });
+            }).catch(error => {
+                console.error('Error:', error);
+                alert('Terjadi kesalahan saat menghapus agenda.');
+            });
+        }
+    });
+    
 </script>
 
 <script src="{% static 'calendar/js/main.js' %}"></script>
