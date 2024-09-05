@@ -102,15 +102,29 @@
     document.addEventListener('DOMContentLoaded', function() {
         var calendarEl = document.getElementById('calendar');
         var agendaData = {{ agenda_list|safe }};
+        
         var events = agendaData.map(function(item) {
-            return {
-                id: item.id,
-                title: item.nama_agenda,
-                start: item.tanggal_mulai,
-                end: item.tanggal_selesai,
-                description: item.deskripsi,
-                location: item.tempat
-            };
+            if (item.tanggal_mulai === item.tanggal_selesai) {
+                var endDate = new Date(item.tanggal_selesai);
+                endDate.setDate(endDate.getDate() + 1);
+                return {
+                    id: item.id,
+                    title: item.nama_agenda,
+                    start: item.tanggal_mulai,
+                    end: endDate.toISOString().slice(0, 10),
+                    description: item.deskripsi,
+                    location: item.tempat
+                };
+            } else {
+                return {
+                    id: item.id,
+                    title: item.nama_agenda,
+                    start: item.tanggal_mulai,
+                    end: item.tanggal_selesai,
+                    description: item.deskripsi,
+                    location: item.tempat
+                };
+            }
         });
     
         var calendar = new FullCalendar.Calendar(calendarEl, {
@@ -131,40 +145,40 @@
                 document.getElementById('agendaForm').action = "{% url 'update-agenda' 0 %}".replace('0', event.id);
                 document.getElementById('agendaTitle').value = event.title;
                 document.getElementById('agendaStart').value = event.start.toISOString().slice(0, 16);
-                document.getElementById('agendaEnd').value = event.end.toISOString().slice(0, 16);
+                document.getElementById('agendaEnd').value = event.end ? event.end.toISOString().slice(0, 16) : event.start.toISOString().slice(0, 16);
                 document.getElementById('agendaPlace').value = event.extendedProps.location;
                 document.getElementById('agendaDescription').value = event.extendedProps.description;
-                document.getElementById('agendaId').value = event.id;  // Store agenda ID in a hidden field
-                document.getElementById('agendaForm').dataset.agendaId = event.id; // Also store it in a data attribute
+                document.getElementById('agendaId').value = event.id;  // Store agenda ID in hidden field
                 $('#agendaModal').modal('show');
             }
         });
     
         calendar.render();
-    });
     
-    document.getElementById('deleteButton').addEventListener('click', function() {
-        var agendaId = document.getElementById('agendaId').value; // Get the ID from the hidden field or data attribute
-        if (confirm("Apakah Anda yakin ingin menghapus agenda ini?")) {
-            fetch(`{% url 'delete-agenda' 0 %}`.replace('0', agendaId), {
-                method: 'DELETE',
-                headers: {
-                    'X-CSRFToken': '{{ csrf_token }}',
-                    'Content-Type': 'application/json',
-                }
-            }).then(response => {
-                return response.json().then(data => {
-                    if (response.ok) {
-                        window.location.reload();
-                    } else {
-                        alert(`Gagal menghapus agenda. Status: ${response.status}. Pesan: ${data.detail[0].msg}`);
+        // Event listener for the delete button
+        document.getElementById('deleteButton').addEventListener('click', function() {
+            var agendaId = document.getElementById('agendaId').value;  // Retrieve agenda ID from hidden field
+            if (confirm("Apakah Anda yakin ingin menghapus agenda ini?")) {
+                fetch(`{% url 'delete-agenda' 0 %}`.replace('0', agendaId), {
+                    method: 'DELETE',
+                    headers: {
+                        'X-CSRFToken': '{{ csrf_token }}',
+                        'Content-Type': 'application/json',
                     }
+                }).then(response => {
+                    return response.json().then(data => {
+                        if (response.ok) {
+                            window.location.reload();
+                        } else {
+                            alert(`Gagal menghapus agenda. Status: ${response.status}. Pesan: ${data.detail[0].msg}`);
+                        }
+                    });
+                }).catch(error => {
+                    console.error('Error:', error);
+                    alert('Terjadi kesalahan saat menghapus agenda.');
                 });
-            }).catch(error => {
-                console.error('Error:', error);
-                alert('Terjadi kesalahan saat menghapus agenda.');
-            });
-        }
+            }
+        });
     });
     
 </script>
