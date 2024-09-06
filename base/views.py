@@ -123,46 +123,81 @@ def dashboard(request):
     if 'access_token' not in request.session:
         return redirect('admin-login')
 
-    # if not refresh_token(request):
-    #     return redirect('admin-login')
-    
+    # Get admin data
     admin_data = get_admin_data(request)
-    
     access_token = request.session.get('access_token')
-    
-    print(access_token)
-    
-    # Set start_date and end_date to today
-    today = datetime.today().strftime('%Y-%m-%d')
-    start_date = today
-    end_date = today
 
-    api_url = f'{settings.API_URL}/admin/kegiatan?start_date={start_date}&end_date={end_date}'
+    # Get today's date in 'YYYY-MM-DD' format
+    today = datetime.today().strftime('%Y-%m-%d')
+
+    # API URLs
+    api_url = f'{settings.API_URL}/admin/kegiatan?start_date={today}&end_date={today}'
+    api_url_agenda = f'{settings.API_URL}/agenda/'
+    api_url_user = f'{settings.API_URL}/admin/users'
+    api_url_pamong = f'{settings.API_URL}/admin/pamong'
+
+    # Set up headers
     headers = {
         'Accept': 'application/json',
         'Authorization': f'Bearer {access_token}'
     }
 
+    # Send requests to all necessary endpoints
     response = requests.get(api_url, headers=headers)
+    response_agenda = requests.get(api_url_agenda, headers=headers)
+    response_user = requests.get(api_url_user, headers=headers)
+    response_pamong = requests.get(api_url_pamong, headers=headers)
 
-    if response.status_code == 200:
-        response_data = response.json()
-        if isinstance(response_data, dict) and response_data.get("detail") == "No kegiatan found":
+    if (response.status_code == 200 and response_agenda.status_code == 200 and
+        response_user.status_code == 200 and response_pamong.status_code == 200):
+
+        kegiatan_list = response.json()
+        agenda_list = response_agenda.json()
+        user_list = response_user.json()
+        pamong_list = response_pamong.json()
+
+        # Handle no kegiatan case
+        if isinstance(kegiatan_list, dict) and kegiatan_list.get("detail") == "No kegiatan found":
             kegiatan_list = []
+            total_kegiatan = 0
         else:
-            kegiatan_list = response_data
+            total_kegiatan = len(kegiatan_list)
+
+        # Filter agendas happening today
+        total_agenda_today = 0
+        for agenda in agenda_list:
+            tanggal_mulai = agenda.get('tanggal_mulai', '')
+            tanggal_selesai = agenda.get('tanggal_selesai', '')
+
+            # Check if today's date is between tanggal_mulai and tanggal_selesai
+            if today >= tanggal_mulai[:10] and today <= tanggal_selesai[:10]:
+                total_agenda_today += 1
+
+        # Get total users and pamong
+        total_user = len(user_list)
+        total_pamong = len(pamong_list)
+
     else:
         kegiatan_list = []
-    
+        total_kegiatan = 0
+        total_agenda_today = 0
+        total_user = 0
+        total_pamong = 0
+
     print(api_url)
     print(response.status_code)
     print(response.text)
-    
+
+    # Pass data to the template
     context = {
         'admin_data': admin_data,
         'kegiatan_list': kegiatan_list,
-        'start_date': start_date,
-        'end_date': end_date,
+        'total_kegiatan': total_kegiatan,
+        'total_agenda_today': total_agenda_today,
+        'total_user': total_user,
+        'total_pamong': total_pamong,
+        'start_date': today,
+        'end_date': today,
     }
 
     return render(request, 'dashboard.html', context)
@@ -251,6 +286,8 @@ def list_pamong(request):
         pamong_list = response.json()
     else:
         pamong_list = []
+    
+    print(pamong_list)
     
     context = {
         'admin_data': admin_data,
