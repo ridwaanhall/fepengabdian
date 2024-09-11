@@ -1,20 +1,15 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from django.http import HttpResponse, JsonResponse
+from django.http import JsonResponse
 import requests
 import json
 from requests.exceptions import ChunkedEncodingError, Timeout, RequestException
-from datetime import datetime, timedelta
+from datetime import datetime
 import calendar, time
 from django.conf import settings
 from django.urls import reverse
 
-# check
-# def index(request):
-#     return HttpResponse("About page")
 
-
-# auth
 def login(request):
     if request.method == "POST":
         username = request.POST.get('username')
@@ -39,7 +34,6 @@ def login(request):
             token_data = response.json()
             access_token = token_data['access_token']
             
-            print(access_token)
 
             # Store the tokens in session
             request.session['access_token'] = access_token
@@ -60,22 +54,6 @@ def logout(request):
     request.session.flush()
     return redirect('admin-login')
 
-# def refresh_token(request):
-#     url = f'{settings.API_URL}/auth/refresh-token'
-#     headers = {
-#         'accept': 'application/json',
-#         'Authorization': f'Bearer {request.session.get("access_token")}'
-#     }
-
-#     response = requests.post(url, headers=headers)
-
-#     if response.status_code == 200:
-#         token_data = response.json()
-#         request.session['access_token'] = token_data['access_token']
-#         return True
-#     else:
-#         messages.error(request, response.text)
-#         return False
 
 def forgot_password(request):
     return render(request, 'forgot-password.html')
@@ -184,10 +162,6 @@ def dashboard(request):
         total_user = 0
         total_pamong = 0
 
-    print(api_url)
-    print(response.status_code)
-    print(response.text)
-
     # Pass data to the template
     context = {
         'admin_data': admin_data,
@@ -249,10 +223,6 @@ def tambah_pamong(request):
         else:
             response = requests.post(api_url, data=data, headers={'Accept': 'application/json'})
 
-        print("Response Status Code:", response.status_code)
-        print("Response Text:", response.text)
-        print("Response JSON:", response.json())
-
         if response.status_code == 201:
             messages.success(request, 'Pamong berhasil ditambahkan!')
             return redirect('list-pamong')
@@ -287,7 +257,6 @@ def list_pamong(request):
     else:
         pamong_list = []
     
-    print(pamong_list)
     
     context = {
         'admin_data': admin_data,
@@ -381,7 +350,6 @@ def hapus_pamong(request, pamong_id):
     access_token = request.session.get('access_token')
     
     api_url = f'{settings.API_URL}/admin/pamong/{pamong_id}'
-    print(f"API URL: {api_url}")
     
     headers = {
         'Accept': 'application/json',
@@ -389,8 +357,6 @@ def hapus_pamong(request, pamong_id):
     }
 
     response = requests.delete(api_url, headers=headers)
-    print(f"Response Status: {response.status_code}")
-    print(f"Response Content: {response.text}")
 
     if response.status_code == 204:
         messages.success(request, 'Pamong berhasil dihapus!')
@@ -431,8 +397,6 @@ def tambah_user(request):
 
         response = requests.post(api_url, json=user_data, headers=headers)
 
-        print("Response Status Code:", response.status_code)
-        print("Response Text:", response.text)
 
         if response.status_code == 201:
             messages.success(request, 'User berhasil ditambahkan!')
@@ -465,15 +429,27 @@ def list_user(request):
 
     if response.status_code == 200:
         user_list = response.json()
+        
+        # Fetch pamong data to get names
+        pamong_api_url = f'{settings.API_URL}/admin/pamong'
+        pamong_response = requests.get(pamong_api_url, headers=headers)
+        
+        if pamong_response.status_code == 200:
+            pamong_list = pamong_response.json()
+            pamong_dict = {pamong['id']: pamong['nama'] for pamong in pamong_list}
+            
+            for user in user_list:
+                user['nama'] = pamong_dict.get(user['pamong_id'], 'Unknown') 
+
     else:
         user_list = []
         
-    print(user_list)
     
     context = {
         'admin_data': admin_data,
         'user_list': user_list
     }
+
     return render(request, 'list-user.html', context)
 
 def detail_edit_user(request, user_id):
@@ -517,7 +493,6 @@ def hapus_user(request, user_id):
     access_token = request.session.get('access_token')
     
     api_url = f'{settings.API_URL}/admin/users/{user_id}'
-    print(f"API URL: {api_url}")
     
     headers = {
         'Accept': 'application/json',
@@ -525,8 +500,6 @@ def hapus_user(request, user_id):
     }
 
     response = requests.delete(api_url, headers=headers)
-    print(f"Response Status: {response.status_code}")
-    print(f"Response Content: {response.text}")
 
     if response.status_code == 204:
         messages.success(request, 'User berhasil dihapus!')
@@ -571,10 +544,7 @@ def list_kegiatan(request):
             kegiatan_list = response_data
     else:
         kegiatan_list = []
-    
-    print(response.status_code)
-    print(response.text)
-    
+
     context = {
         'admin_data': admin_data,
         'kegiatan_list': kegiatan_list,
@@ -645,8 +615,6 @@ def kalender_agenda(request):
     else:
         agenda_list = []
     
-    print(response.status_code)
-    print(response.text)
     
     context = {
         'agenda_list': agenda_list,
