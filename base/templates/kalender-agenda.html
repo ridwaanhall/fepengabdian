@@ -45,7 +45,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="agendaModalLabel">Agenda</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <button type="button" class="close" id="closeModalX" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -75,9 +75,9 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                    <button type="button" class="btn btn-secondary" id="closeModalBtn">Batal</button>
                     <button type="submit" class="btn btn-primary">Simpan Agenda</button>
-                    <button type="button" class="btn btn-danger" id="deleteButton">Hapus Agenda</button>
+                    <button type="button" class="btn btn-danger" id="deleteButton" style="display: none;">Hapus Agenda</button>
                 </div>
             </form>
         </div>
@@ -134,10 +134,12 @@
             eventLimit: true,
             events: events,
             dateClick: function(info) {
+                // Show the form for creating a new agenda
                 document.getElementById('agendaForm').action = "{% url 'tambah-agenda' %}";
                 document.getElementById('agendaForm').reset();
                 document.getElementById('agendaStart').value = info.dateStr + "T00:00";
                 document.getElementById('agendaEnd').value = info.dateStr + "T00:00";
+                document.getElementById('deleteButton').style.display = 'none';  // Hide delete button
                 $('#agendaModal').modal('show');
             },
             eventClick: function(info) {
@@ -149,6 +151,7 @@
                 document.getElementById('agendaPlace').value = event.extendedProps.location;
                 document.getElementById('agendaDescription').value = event.extendedProps.description;
                 document.getElementById('agendaId').value = event.id;  // Store agenda ID in hidden field
+                document.getElementById('deleteButton').style.display = 'inline';  // Show delete button
                 $('#agendaModal').modal('show');
             }
         });
@@ -180,7 +183,14 @@
             }
         });
     });
-    
+    // Trigger close modal manually
+    document.getElementById('closeModalBtn').addEventListener('click', function() {
+        $('#agendaModal').modal('hide');
+    });
+
+    document.getElementById('closeModalX').addEventListener('click', function() {
+        $('#agendaModal').modal('hide');
+    });
 </script>
 
 <script src="{% static 'calendar/js/main.js' %}"></script>
